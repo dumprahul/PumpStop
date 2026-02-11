@@ -19,10 +19,10 @@ type FallingBar = {
 }
 
 const stats: StatItem[] = [
-  { value: "<100ms", label: "Execution", delay: 0 },
-  { value: "$0", label: "Gas Fees", delay: 0.15 },
-  { value: "24/7", label: "Market Hours", delay: 0.3 },
-  { value: "100%", label: "Non-Custodial", delay: 0.45 },
+  { value: "<100ms", label: "EXECUTION", delay: 0 },
+  { value: "$0", label: "GAS FEES", delay: 0.15 },
+  { value: "24/7", label: "MARKET HOURS", delay: 0.3 },
+  { value: "100%", label: "NON-CUSTODIAL", delay: 0.45 },
 ]
 
 const generateFallingBars = (): FallingBar[] => {
@@ -74,16 +74,13 @@ export const WhyWeWinSection = () => {
               transition={{ duration: 0.6, ease: [0.645, 0.045, 0.355, 1] }}
             >
               <div
-                className="relative h-6 inline-flex items-center font-mono uppercase text-xs mb-8 px-3 py-1 rounded-full"
+                className="relative h-6 inline-flex items-center uppercase text-xs mb-8 px-3 py-1 rounded-full bg-[hsl(174,62%,56%)]/10 border border-[hsl(174,62%,56%)]/20"
                 style={{
                   fontFamily: "var(--font-mono), 'JetBrains Mono', ui-monospace, monospace",
-                  background: "rgba(255, 215, 0, 0.1)",
-                  color: "#FFD700",
                 }}
               >
-                <span className="flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 bg-[#FFD700] rounded-full" />
-                  BUILT DIFFERENT
+                <span className="flex items-center gap-1.5 text-[hsl(174,62%,56%)] font-semibold">
+                  ● BUILT DIFFERENT
                 </span>
               </div>
             </motion.div>
@@ -92,27 +89,11 @@ export const WhyWeWinSection = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={isVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.1, ease: [0.645, 0.045, 0.355, 1] }}
-              className="text-[48px] lg:text-[56px] font-medium leading-[1.1] tracking-tight text-white mb-6"
+              className="text-4xl lg:text-5xl font-semibold leading-tight tracking-tight text-white mb-6"
               style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}
             >
               Settling trades in{" "}
-              <span className="relative">
-                <span
-                  className="relative z-10"
-                  style={{
-                    background: "linear-gradient(135deg, #FFD700 0%, #FFA500 100%)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                  }}
-                >
-                  milliseconds
-                </span>
-                <span
-                  className="absolute inset-0 blur-xl opacity-30"
-                  style={{ background: "#FFD700" }}
-                />
-              </span>
-              , not days — for traders who refuse to wait.
+              <span className="text-[hsl(174,62%,56%)]">milliseconds</span>, not days — for traders who refuse to wait.
             </motion.h2>
 
             <motion.p
@@ -131,14 +112,10 @@ export const WhyWeWinSection = () => {
               animate={isVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.3, ease: [0.645, 0.045, 0.355, 1] }}
             >
-              <a
-                href="#"
-                className="inline-flex items-center gap-2 text-[#FFD700] font-medium text-base group"
-                style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}
-              >
+              <button className="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl font-semibold text-base transition-colors bg-[hsl(174,62%,56%)] text-black hover:bg-[hsl(174,62%,66%)]" style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}>
                 Learn how it works
                 <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
-              </a>
+              </button>
             </motion.div>
 
             {/* Stats Row */}
@@ -146,7 +123,7 @@ export const WhyWeWinSection = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={isVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.4, ease: [0.645, 0.045, 0.355, 1] }}
-              className="grid grid-cols-4 gap-6 mt-12 pt-8 border-t border-foreground/10"
+              className="grid grid-cols-4 gap-6 mt-12 pt-8 border-t border-white/10"
             >
               {stats.map((stat, index) => (
                 <motion.div
@@ -161,12 +138,12 @@ export const WhyWeWinSection = () => {
                   className="flex flex-col gap-1"
                 >
                   <span
-                    className="text-2xl lg:text-3xl font-semibold tracking-tight"
-                    style={{ color: "#FFD700" }}
+                    className="text-3xl font-bold tracking-tight text-[hsl(174,62%,56%)]"
+                    style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}
                   >
                     {stat.value}
                   </span>
-                  <span className="text-xs text-zinc-400 uppercase tracking-wide">
+                  <span className="text-xs text-zinc-400 uppercase tracking-wider font-semibold" style={{ fontFamily: "var(--font-mono), 'JetBrains Mono', ui-monospace, monospace" }}>
                     {stat.label}
                   </span>
                 </motion.div>
@@ -207,7 +184,7 @@ export const WhyWeWinSection = () => {
                 className="bg-zinc-900/50 rounded-2xl p-6 border border-white/10"
               >
                 <div className="text-xs text-zinc-400 uppercase tracking-wider font-semibold mb-3">Gas Fees</div>
-                <div className="text-4xl font-bold text-[#FFD700]">$0</div>
+                <div className="text-4xl font-bold text-[hsl(174,62%,56%)]">$0</div>
               </motion.div>
 
               {/* 24/7 Card */}

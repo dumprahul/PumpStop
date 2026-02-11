@@ -135,9 +135,9 @@ export const PerpetualsSection = () => {
                   className="flex items-center gap-3"
                 >
                   <div
-                    className="w-8 h-8 rounded-lg flex items-center justify-center bg-[#FFD700]/10"
+                    className="w-8 h-8 rounded-lg flex items-center justify-center bg-[hsl(174,62%,56%)]/10"
                   >
-                    <div className="text-[#FFD700]">{feature.icon}</div>
+                    <div className="text-[hsl(174,62%,56%)]">{feature.icon}</div>
                   </div>
                   <span
                     className="text-base text-white"
@@ -162,7 +162,7 @@ export const PerpetualsSection = () => {
               <div className="p-6 border-b border-white/10">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#FFD700] to-[#FFA500] flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[hsl(174,62%,56%)] to-[hsl(174,62%,46%)] flex items-center justify-center">
                       <span className="text-background font-bold text-sm">
                         {mockTrades[activeIndex].symbol.charAt(0)}
                       </span>
@@ -211,8 +211,8 @@ export const PerpetualsSection = () => {
                 >
                   <defs>
                     <linearGradient id="chartGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                      <stop offset="0%" stopColor="#FFD700" stopOpacity="0.3" />
-                      <stop offset="100%" stopColor="#FFD700" stopOpacity="0" />
+                      <stop offset="0%" stopColor="hsl(174,62%,56%)" stopOpacity="0.3" />
+                      <stop offset="100%" stopColor="hsl(174,62%,56%)" stopOpacity="0" />
                     </linearGradient>
                   </defs>
                   <motion.path
@@ -221,7 +221,7 @@ export const PerpetualsSection = () => {
                     transition={{ duration: 2, delay: 0.5, ease: "easeOut" }}
                     d="M0,100 Q50,80 100,90 T200,60 T300,70 T400,40"
                     fill="none"
-                    stroke="#FFD700"
+                    stroke="hsl(174,62%,56%)"
                     strokeWidth="3"
                   />
                   <motion.path
@@ -238,8 +238,8 @@ export const PerpetualsSection = () => {
                   initial={{ opacity: 0, scale: 0 }}
                   animate={isVisible ? { opacity: 1, scale: 1 } : {}}
                   transition={{ duration: 0.5, delay: 2 }}
-                  className="absolute right-6 top-1/4 w-3 h-3 bg-[#FFD700] rounded-full"
-                  style={{ boxShadow: "0 0 20px rgba(255, 215, 0, 0.5)" }}
+                  className="absolute right-6 top-1/4 w-3 h-3 bg-[hsl(174,62%,56%)] rounded-full"
+                  style={{ boxShadow: "0 0 20px hsla(174,62%,56%,0.5)" }}
                 />
               </div>
 
@@ -259,14 +259,14 @@ export const PerpetualsSection = () => {
               <div className="px-6 pb-6">
                 <div className="flex items-center justify-between text-sm mb-2">
                   <span className="text-zinc-400">Leverage</span>
-                  <span className="text-[#FFD700] font-semibold">10x</span>
+                  <span className="text-[hsl(174,62%,56%)] font-semibold">10x</span>
                 </div>
                 <div className="h-2 bg-zinc-800 rounded-full overflow-hidden">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={isVisible ? { width: "100%" } : {}}
                     transition={{ duration: 1.5, delay: 0.8, ease: "easeOut" }}
-                    className="h-full bg-gradient-to-r from-[#FFD700] to-[#FFA500] rounded-full"
+                    className="h-full bg-gradient-to-r from-[hsl(174,62%,56%)] to-[hsl(174,62%,46%)] rounded-full"
                   />
                 </div>
               </div>

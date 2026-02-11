@@ -106,7 +106,7 @@ export function ENSModal({ isOpen, onClose, address, onSuccess }: ENSModalProps)
             {/* Glow effect */}
             <div
               className="absolute top-0 right-0 -m-20 w-40 h-40 rounded-full blur-3xl opacity-20 pointer-events-none"
-              style={{ background: "#FFD700" }}
+              style={{ background: "hsl(174,62%,56%)" }}
             />
 
             <div className="relative p-6">
@@ -135,7 +135,7 @@ export function ENSModal({ isOpen, onClose, address, onSuccess }: ENSModalProps)
                       className={cn(
                         "w-full px-4 py-3 bg-background border rounded-lg",
                         "text-foreground placeholder:text-muted-foreground",
-                        "focus:outline-none focus:ring-2 focus:ring-[#FFD700]/50",
+                        "focus:outline-none focus:ring-2 focus:ring-[hsl(174,62%,56%)]/50",
                         "transition-all duration-200",
                         isAvailable === true && "border-green-500",
                         isAvailable === false && "border-red-500"
@@ -221,8 +221,8 @@ export function ENSModal({ isOpen, onClose, address, onSuccess }: ENSModalProps)
                   disabled={!canRegister}
                   className={cn(
                     "flex-1 px-4 py-3 rounded-lg font-medium",
-                    "bg-[#FFD700] text-black",
-                    "hover:bg-[#FFD700]/90 transition-colors",
+                    "bg-[hsl(174,62%,56%)] text-black",
+                    "hover:bg-[hsl(174,62%,56%)]/90 transition-colors",
                     "disabled:opacity-50 disabled:cursor-not-allowed",
                     "flex items-center justify-center gap-2"
                   )}

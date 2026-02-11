@@ -171,7 +171,7 @@ export const OrderbookSection = () => {
                   <div className="flex items-center gap-3">
                     <span className="text-2xl font-semibold text-white">$178.275</span>
                     <span
-                      className="text-xs px-2 py-1 rounded bg-[#FFD700]/10 text-[#FFD700]"
+                      className="text-xs px-2 py-1 rounded bg-[hsl(174,62%,56%)]/10 text-[hsl(174,62%,56%)]"
                       style={{ fontFamily: "var(--font-mono), 'JetBrains Mono', ui-monospace, monospace" }}
                     >
                       Spread: $0.05
@@ -212,7 +212,7 @@ export const OrderbookSection = () => {
               {/* Footer */}
               <div className="p-4 border-t border-white/10 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Lock className="w-3.5 h-3.5 text-[#FFD700]" />
+                  <Lock className="w-3.5 h-3.5 text-[hsl(174,62%,56%)]" />
                   <span className="text-xs text-zinc-400">Settlement proof ready</span>
                 </div>
                 <div className="flex items-center gap-1">
@@ -303,7 +303,7 @@ export const OrderbookSection = () => {
               className="flex gap-8 mt-10 pt-8 border-t border-white/10"
             >
               <div className="flex flex-col gap-1">
-                <span className="text-3xl font-bold text-[#FFD700]" style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}>
+                <span className="text-3xl font-bold text-[hsl(174,62%,56%)]" style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}>
                   12ms
                 </span>
                 <span className="text-xs text-zinc-400 uppercase tracking-wider font-semibold" style={{ fontFamily: "var(--font-mono), 'JetBrains Mono', ui-monospace, monospace" }}>

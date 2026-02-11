@@ -33,7 +33,7 @@ export function PerpetualsNavbar() {
             >
               <span
                 className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold"
-                style={{ background: "rgba(255,215,0,0.2)", color: "#FFD700" }}
+                style={{ background: "hsla(174,62%,56%,0.2)", color: "hsl(174,62%,56%)" }}
               >
                 M
               </span>

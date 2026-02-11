@@ -14,7 +14,7 @@ export default function AssetNotFound() {
         </p>
         <Link
           href="/markets"
-          className="px-6 py-3 rounded-lg bg-[#FFD700] text-background font-medium hover:opacity-90 transition-colors"
+          className="px-6 py-3 rounded-lg bg-[hsl(174,62%,56%)] text-background font-medium hover:opacity-90 transition-colors"
         >
           Back to Explore
         </Link>

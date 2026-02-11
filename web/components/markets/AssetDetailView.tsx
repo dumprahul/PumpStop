@@ -410,7 +410,7 @@ export function AssetDetailView({ asset }: { asset: AssetData }) {
                 className={cn(
                   "px-4 py-2 rounded-lg text-sm font-medium transition-all",
                   chartRange === range.key
-                    ? "bg-[#FFD700] text-background"
+                    ? "bg-[hsl(174,62%,56%)] text-background"
                     : "bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground"
                 )}
               >
@@ -708,7 +708,7 @@ export function AssetDetailView({ asset }: { asset: AssetData }) {
                   className={cn(
                     "flex-1 py-4 text-sm font-semibold transition-colors",
                     activeTab === "buy"
-                      ? "bg-[#FFD700] text-background"
+                      ? "bg-[hsl(174,62%,56%)] text-background"
                       : "text-muted-foreground hover:bg-muted hover:text-foreground"
                   )}
                 >
@@ -720,7 +720,7 @@ export function AssetDetailView({ asset }: { asset: AssetData }) {
                   className={cn(
                     "flex-1 py-4 text-sm font-semibold transition-colors",
                     activeTab === "sell"
-                      ? "bg-[#FFD700] text-background"
+                      ? "bg-[hsl(174,62%,56%)] text-background"
                       : "text-muted-foreground hover:bg-muted hover:text-foreground"
                   )}
                 >

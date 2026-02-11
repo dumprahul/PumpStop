@@ -211,7 +211,7 @@ function TokenLogo({ ticker, size = "md" }: { ticker: string; size?: "sm" | "md"
     : getLogoUrl(ticker)
 
   if (imgError) {
-    const bg = fallbackColors[ticker] || "from-[#FFD700] to-amber-500"
+    const bg = fallbackColors[ticker] || "from-[hsl(174,62%,56%)] to-amber-500"
     return (
       <div
         className={cn(

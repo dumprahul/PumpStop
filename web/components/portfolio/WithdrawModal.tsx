@@ -101,7 +101,7 @@ export function WithdrawModal({
             {/* Background glow */}
             <div
               className="absolute top-0 right-0 -m-20 w-40 h-40 rounded-full blur-3xl opacity-20 pointer-events-none"
-              style={{ background: "#FFD700" }}
+              style={{ background: "hsl(174,62%,56%)" }}
             />
 
             <div className="p-6">
@@ -125,7 +125,7 @@ export function WithdrawModal({
                       className={cn(
                         "flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-all",
                         assetType === "usdc"
-                          ? "bg-[#FFD700] text-background"
+                          ? "bg-[hsl(174,62%,56%)] text-background"
                           : "bg-muted text-muted-foreground hover:bg-muted/80"
                       )}
                       disabled={isLoading}
@@ -138,7 +138,7 @@ export function WithdrawModal({
                       className={cn(
                         "flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-all",
                         assetType === "stock"
-                          ? "bg-[#FFD700] text-background"
+                          ? "bg-[hsl(174,62%,56%)] text-background"
                           : "bg-muted text-muted-foreground hover:bg-muted/80"
                       )}
                       disabled={isLoading}
@@ -158,7 +158,7 @@ export function WithdrawModal({
                       <button
                         type="button"
                         onClick={() => setIsStockDropdownOpen(!isStockDropdownOpen)}
-                        className="w-full flex items-center justify-between gap-2 bg-muted/50 border border-border rounded-xl px-4 py-3 text-left focus:outline-none focus:ring-2 focus:ring-[#FFD700]/50"
+                        className="w-full flex items-center justify-between gap-2 bg-muted/50 border border-border rounded-xl px-4 py-3 text-left focus:outline-none focus:ring-2 focus:ring-[hsl(174,62%,56%)]/50"
                         disabled={isLoading}
                       >
                         <span className="font-medium text-foreground">
@@ -215,7 +215,7 @@ export function WithdrawModal({
                       placeholder="0.00"
                       value={amount}
                       onChange={(e) => setAmount(e.target.value)}
-                      className="w-full bg-muted/50 border border-border rounded-xl px-4 py-3 pl-10 text-lg focus:outline-none focus:ring-2 focus:ring-[#FFD700]/50 focus:border-transparent"
+                      className="w-full bg-muted/50 border border-border rounded-xl px-4 py-3 pl-10 text-lg focus:outline-none focus:ring-2 focus:ring-[hsl(174,62%,56%)]/50 focus:border-transparent"
                       disabled={isLoading || (assetType === "stock" && !selectedStock)}
                     />
                     {assetType === "usdc" && (
@@ -237,7 +237,7 @@ export function WithdrawModal({
                   <button
                     type="button"
                     onClick={() => setAmount(maxBalance.toFixed(assetType === "usdc" ? 2 : 6))}
-                    className="mt-1 text-xs font-medium text-[#FFD700] hover:underline"
+                    className="mt-1 text-xs font-medium text-[hsl(174,62%,56%)] hover:underline"
                     disabled={isLoading || (assetType === "stock" && !selectedStock)}
                   >
                     Max
@@ -257,7 +257,7 @@ export function WithdrawModal({
                     <button
                       type="button"
                       onClick={() => setIsChainDropdownOpen(!isChainDropdownOpen)}
-                      className="w-full flex items-center justify-between gap-2 bg-muted/50 border border-border rounded-xl px-4 py-3 text-left focus:outline-none focus:ring-2 focus:ring-[#FFD700]/50"
+                      className="w-full flex items-center justify-between gap-2 bg-muted/50 border border-border rounded-xl px-4 py-3 text-left focus:outline-none focus:ring-2 focus:ring-[hsl(174,62%,56%)]/50"
                       disabled={isLoading}
                     >
                       <span className="font-medium text-foreground">{selectedChain.name}</span>
@@ -312,7 +312,7 @@ export function WithdrawModal({
                     "flex-1 flex items-center justify-center gap-2 px-4 py-3 text-sm font-semibold rounded-xl transition-opacity",
                     isLoading || !canConfirm
                       ? "bg-muted cursor-not-allowed text-muted-foreground"
-                      : "bg-[#FFD700] text-background hover:opacity-90"
+                      : "bg-[hsl(174,62%,56%)] text-background hover:opacity-90"
                   )}
                 >
                   {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}

@@ -89,7 +89,7 @@ const TIME_FRAMES = ["1D", "7D", "30D", "90D"] as const
 
 const PIE_COLORS = {
   liquid: "#22c55e",
-  nonLiquid: "#FFD700",
+  nonLiquid: "hsl(174,62%,56%)",
 }
 
 export function PortfolioView() {
@@ -276,15 +276,15 @@ export function PortfolioView() {
             </div>
           </div>
 
-          <div className="rounded-2xl bg-card border-2 border-[#FFD700]/40 p-8 shadow-sm hover:shadow-lg transition-all overflow-hidden relative group bg-gradient-to-br from-[#FFD700]/8 to-transparent">
-            <div className="absolute top-0 right-0 w-40 h-40 rounded-full blur-3xl opacity-25 group-hover:opacity-35 transition-opacity" style={{ background: "#FFD700" }} />
+          <div className="rounded-2xl bg-card border-2 border-[hsl(174,62%,56%)]/40 p-8 shadow-sm hover:shadow-lg transition-all overflow-hidden relative group bg-gradient-to-br from-[hsl(174,62%,56%)]/8 to-transparent">
+            <div className="absolute top-0 right-0 w-40 h-40 rounded-full blur-3xl opacity-25 group-hover:opacity-35 transition-opacity" style={{ background: "hsl(174,62%,56%)" }} />
             <div className="relative">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-inner" style={{ background: "rgba(255,215,0,0.25)", color: "#FFD700" }}>
+                <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-inner" style={{ background: "hsla(174,62%,56%,0.25)", color: "hsl(174,62%,56%)" }}>
                   <Layers className="w-7 h-7" />
                 </div>
                 <div>
-                  <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: "#FFD700" }}>
+                  <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: "hsl(174,62%,56%)" }}>
                     Trading
                   </span>
                   <p className="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mt-0.5">
@@ -403,7 +403,7 @@ export function PortfolioView() {
               <div className="h-full flex flex-col items-center justify-center text-center">
                 <div
                   className="w-24 h-24 rounded-full flex items-center justify-center mb-4"
-                  style={{ background: "rgba(255,215,0,0.1)" }}
+                  style={{ background: "hsla(174,62%,56%,0.1)" }}
                 >
                   <Wallet className="w-10 h-10 text-muted-foreground" />
                 </div>
@@ -427,14 +427,14 @@ export function PortfolioView() {
               <button
                 onClick={() => setIsDepositModalOpen(true)}
                 className="flex-1 min-w-[80px] flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-medium"
-                style={{ background: "rgba(255,215,0,0.15)", color: "#FFD700" }}
+                style={{ background: "hsla(174,62%,56%,0.15)", color: "hsl(174,62%,56%)" }}
               >
                 <Plus className="w-3.5 h-3.5" /> Deposit
               </button>
               <button
                 onClick={() => setIsWithdrawModalOpen(true)}
                 className="flex-1 min-w-[80px] flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-medium"
-                style={{ background: "rgba(255,215,0,0.15)", color: "#FFD700" }}
+                style={{ background: "hsla(174,62%,56%,0.15)", color: "hsl(174,62%,56%)" }}
               >
                 <ArrowUpFromLine className="w-3.5 h-3.5" /> Withdraw
               </button>
@@ -469,12 +469,12 @@ export function PortfolioView() {
             <div className="flex-1 flex flex-col items-center justify-center py-20 px-6">
               <div
                 className="relative w-28 h-28 mb-6 flex items-center justify-center rounded-2xl"
-                style={{ background: "rgba(255,215,0,0.06)" }}
+                style={{ background: "hsla(174,62%,56%,0.06)" }}
               >
                 <Wallet className="w-14 h-14 text-muted-foreground/60" />
                 <div
                   className="absolute -bottom-1 -right-1 w-9 h-9 rounded-full flex items-center justify-center"
-                  style={{ background: "rgba(255,215,0,0.2)", color: "#FFD700" }}
+                  style={{ background: "hsla(174,62%,56%,0.2)", color: "hsl(174,62%,56%)" }}
                 >
                   <Settings className="w-4 h-4" />
                 </div>
@@ -486,7 +486,7 @@ export function PortfolioView() {
                 type="button"
                 onClick={() => openConnectModal?.()}
                 className="px-6 py-2.5 rounded-xl font-semibold text-background"
-                style={{ background: "#FFD700", fontFamily: "var(--font-figtree), Figtree" }}
+                style={{ background: "hsl(174,62%,56%)", fontFamily: "var(--font-figtree), Figtree" }}
               >
                 Connect wallet
               </button>
@@ -500,7 +500,7 @@ export function PortfolioView() {
                 type="button"
                 onClick={() => setIsDepositModalOpen(true)}
                 className="px-6 py-2.5 rounded-xl font-semibold text-background"
-                style={{ background: "#FFD700", fontFamily: "var(--font-figtree), Figtree" }}
+                style={{ background: "hsl(174,62%,56%)", fontFamily: "var(--font-figtree), Figtree" }}
               >
                 Deposit funds
               </button>
@@ -513,7 +513,7 @@ export function PortfolioView() {
               <Link
                 href="/perpetuals"
                 className="mt-4 px-6 py-2.5 rounded-xl font-semibold text-background"
-                style={{ background: "#FFD700", fontFamily: "var(--font-figtree), Figtree" }}
+                style={{ background: "hsl(174,62%,56%)", fontFamily: "var(--font-figtree), Figtree" }}
               >
                 Trade Perpetuals
               </Link>
@@ -540,7 +540,7 @@ export function PortfolioView() {
                       <td className="py-4 px-4">
                         <Link
                           href={`/markets/assets/${holding.ticker}`}
-                          className="flex items-center gap-3 hover:text-[#FFD700] transition-colors"
+                          className="flex items-center gap-3 hover:text-[hsl(174,62%,56%)] transition-colors"
                         >
                           <img
                             src={`https://img.logokit.com/ticker/${holding.ticker}?token=${LOGOKIT_TOKEN}`}
@@ -610,7 +610,7 @@ export function PortfolioView() {
           <div className="flex items-center gap-2 mb-3">
             <div
               className="w-9 h-9 rounded-lg flex items-center justify-center"
-              style={{ background: "rgba(255,215,0,0.12)", color: "#FFD700" }}
+              style={{ background: "hsla(174,62%,56%,0.12)", color: "hsl(174,62%,56%)" }}
             >
               <BarChart3 className="w-4 h-4" />
             </div>
@@ -648,7 +648,7 @@ export function PortfolioView() {
           <div className="flex items-center gap-2 mb-3">
             <div
               className="w-9 h-9 rounded-lg flex items-center justify-center"
-              style={{ background: "rgba(255,215,0,0.12)", color: "#FFD700" }}
+              style={{ background: "hsla(174,62%,56%,0.12)", color: "hsl(174,62%,56%)" }}
             >
               <Target className="w-4 h-4" />
             </div>
@@ -667,7 +667,7 @@ export function PortfolioView() {
           <div className="flex items-center gap-2 mb-3">
             <div
               className="w-9 h-9 rounded-lg flex items-center justify-center"
-              style={{ background: "rgba(255,215,0,0.12)", color: "#FFD700" }}
+              style={{ background: "hsla(174,62%,56%,0.12)", color: "hsl(174,62%,56%)" }}
             >
               <Zap className="w-4 h-4" />
             </div>

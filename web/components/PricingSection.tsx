@@ -185,7 +185,7 @@ export function PricingSection() {
                     {plans.map((plan) => (
                       <div key={plan.level} className="w-24 flex justify-center">
                         {shouldShowCheck(feature.included, plan.level) ? (
-                          <div className="w-6 h-6 rounded-full bg-[#156d95] flex items-center justify-center">
+                          <div className="w-6 h-6 rounded-full bg-[hsl(174,62%,56%)] flex items-center justify-center">
                             <CheckIcon className="w-4 h-4 text-white" />
                           </div>
                         ) : (
@@ -202,7 +202,7 @@ export function PricingSection() {
 
         {/* CTA Button */}
         <div className="mt-12 text-center">
-          <button className="bg-[#156d95] text-white px-[18px] py-[15px] rounded-full font-figtree text-lg hover:rounded-2xl transition-all">
+          <button className="bg-[hsl(174,62%,56%)] text-black px-[18px] py-[15px] rounded-full font-semibold text-lg hover:rounded-2xl transition-all" style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}>
             Get started with {plans.find((p) => p.level === selectedPlan)?.name}
           </button>
         </div>

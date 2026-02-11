@@ -113,7 +113,7 @@ export function DepositModal({ isOpen, onClose, onConfirm }: DepositModalProps) 
             {/* Background glow */}
             <div
               className="absolute top-0 right-0 -m-20 w-40 h-40 rounded-full blur-3xl opacity-20 pointer-events-none"
-              style={{ background: "#FFD700" }}
+              style={{ background: "hsl(174,62%,56%)" }}
             />
 
             <div className="p-6">
@@ -167,7 +167,7 @@ export function DepositModal({ isOpen, onClose, onConfirm }: DepositModalProps) 
                         placeholder="0.00"
                         value={amount}
                         onChange={(e) => setAmount(e.target.value)}
-                        className="w-full bg-muted/50 border border-border rounded-xl px-4 py-3 pl-10 text-lg focus:outline-none focus:ring-2 focus:ring-[#FFD700]/50 focus:border-transparent"
+                        className="w-full bg-muted/50 border border-border rounded-xl px-4 py-3 pl-10 text-lg focus:outline-none focus:ring-2 focus:ring-[hsl(174,62%,56%)]/50 focus:border-transparent"
                         disabled={isLoading}
                       />
                       <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">
@@ -187,7 +187,7 @@ export function DepositModal({ isOpen, onClose, onConfirm }: DepositModalProps) 
                       <button
                         type="button"
                         onClick={() => setIsChainDropdownOpen(!isChainDropdownOpen)}
-                        className="w-full flex items-center justify-between gap-2 bg-muted/50 border border-border rounded-xl px-4 py-3 text-left focus:outline-none focus:ring-2 focus:ring-[#FFD700]/50"
+                        className="w-full flex items-center justify-between gap-2 bg-muted/50 border border-border rounded-xl px-4 py-3 text-left focus:outline-none focus:ring-2 focus:ring-[hsl(174,62%,56%)]/50"
                         disabled={isLoading}
                       >
                         <span className="font-medium text-foreground">{selectedChain.name}</span>
@@ -234,7 +234,7 @@ export function DepositModal({ isOpen, onClose, onConfirm }: DepositModalProps) 
                       <button
                         type="button"
                         onClick={() => setIsStockDropdownOpen(!isStockDropdownOpen)}
-                        className="w-full flex items-center gap-3 bg-muted/50 border border-border rounded-xl px-4 py-3 text-left focus:outline-none focus:ring-2 focus:ring-[#FFD700]/50"
+                        className="w-full flex items-center gap-3 bg-muted/50 border border-border rounded-xl px-4 py-3 text-left focus:outline-none focus:ring-2 focus:ring-[hsl(174,62%,56%)]/50"
                         disabled={isLoading}
                       >
                         {selectedStock ? (
@@ -307,7 +307,7 @@ export function DepositModal({ isOpen, onClose, onConfirm }: DepositModalProps) 
                       <button
                         type="button"
                         onClick={() => setIsChainDropdownOpen(!isChainDropdownOpen)}
-                        className="w-full flex items-center justify-between gap-2 bg-muted/50 border border-border rounded-xl px-4 py-3 text-left focus:outline-none focus:ring-2 focus:ring-[#FFD700]/50"
+                        className="w-full flex items-center justify-between gap-2 bg-muted/50 border border-border rounded-xl px-4 py-3 text-left focus:outline-none focus:ring-2 focus:ring-[hsl(174,62%,56%)]/50"
                         disabled={isLoading}
                       >
                         <span className="font-medium text-foreground">{selectedChain.name}</span>
@@ -362,7 +362,7 @@ export function DepositModal({ isOpen, onClose, onConfirm }: DepositModalProps) 
                     "flex-1 flex items-center justify-center gap-2 px-4 py-3 text-sm font-semibold rounded-xl transition-opacity",
                     isLoading || !canConfirm
                       ? "bg-muted cursor-not-allowed text-muted-foreground"
-                      : "bg-[#FFD700] text-background hover:opacity-90"
+                      : "bg-[hsl(174,62%,56%)] text-background hover:opacity-90"
                   )}
                 >
                   {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}

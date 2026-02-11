@@ -57,7 +57,7 @@ export function AmountModal({
                         {/* Background effect */}
                         <div
                             className="absolute top-0 right-0 -m-16 w-32 h-32 rounded-full blur-3xl opacity-20 pointer-events-none"
-                            style={{ background: "#FFD700" }}
+                            style={{ background: "hsl(174,62%,56%)" }}
                         />
 
                         <h2 className="text-xl font-semibold mb-2" style={{ fontFamily: "var(--font-figtree), Figtree" }}>
@@ -76,7 +76,7 @@ export function AmountModal({
                                     placeholder="0.00"
                                     value={amount}
                                     onChange={(e) => setAmount(e.target.value)}
-                                    className="w-full bg-muted/50 border border-input rounded-lg px-4 py-3 pl-8 text-lg focus:outline-none focus:ring-2 focus:ring-[#FFD700]/50"
+                                    className="w-full bg-muted/50 border border-input rounded-lg px-4 py-3 pl-8 text-lg focus:outline-none focus:ring-2 focus:ring-[hsl(174,62%,56%)]/50"
                                     disabled={isLoading}
                                 />
                                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
@@ -98,7 +98,7 @@ export function AmountModal({
                                         "px-4 py-2 rounded-lg font-medium text-black transition-all flex items-center gap-2",
                                         isLoading || !amount || parseFloat(amount) <= 0
                                             ? "bg-muted cursor-not-allowed text-muted-foreground"
-                                            : "bg-[#FFD700] hover:bg-[#FFD700]/90"
+                                            : "bg-[hsl(174,62%,56%)] hover:bg-[hsl(174,62%,56%)]/90"
                                     )}
                                 >
                                     {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}

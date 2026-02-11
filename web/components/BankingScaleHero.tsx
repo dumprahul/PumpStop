@@ -19,22 +19,22 @@ type DataPoint = {
 const stats: StatItem[] = [
   {
     value: "<100ms",
-    description: "Execution\nspeed",
+    description: "EXECUTION",
     delay: 0,
   },
   {
     value: "$0",
-    description: "Gas fees",
+    description: "GAS FEES",
     delay: 0.2,
   },
   {
     value: "24/7",
-    description: "Market hours",
+    description: "MARKET HOURS",
     delay: 0.4,
   },
   {
     value: "100%",
-    description: "Non-custodial",
+    description: "NON-CUSTODIAL",
     delay: 0.6,
   },
 ]
@@ -76,7 +76,7 @@ export const BankingScaleHero = () => {
         <div className="grid grid-cols-12 gap-5 gap-y-16">
           <div className="col-span-12 md:col-span-6 relative z-10">
             <div
-              className="relative h-6 inline-flex items-center uppercase text-xs mb-12 px-3 py-1 rounded-full bg-[#FFD700]/10 border border-[#FFD700]/20"
+              className="relative h-6 inline-flex items-center uppercase text-xs mb-12 px-3 py-1 rounded-full bg-[hsl(174,62%,56%)]/10 border border-[hsl(174,62%,56%)]/20"
               style={{
                 fontFamily: "var(--font-mono), 'JetBrains Mono', ui-monospace, monospace",
               }}
@@ -93,7 +93,7 @@ export const BankingScaleHero = () => {
                     duration: 0.8,
                     ease: "easeOut",
                   }}
-                  className="block whitespace-nowrap overflow-hidden relative z-10 text-[#FFD700] font-semibold"
+                  className="block whitespace-nowrap overflow-hidden relative z-10 text-[hsl(174,62%,56%)] font-semibold"
                 >
                   ● BUILT DIFFERENT
                 </motion.span>
@@ -107,7 +107,7 @@ export const BankingScaleHero = () => {
               }}
             >
               Settling trades in{" "}
-              <span className="text-[#FFD700]">milliseconds</span>, not days
+              <span className="text-[hsl(174,62%,56%)]">milliseconds</span>, not days
               <br />— for traders who refuse to wait.
             </h2>
 
@@ -121,7 +121,7 @@ export const BankingScaleHero = () => {
             </p>
 
             <div className="flex gap-4 mt-8">
-              <button className="relative inline-flex justify-center items-center leading-5 text-center cursor-pointer whitespace-nowrap outline-none font-semibold h-12 text-black bg-[#FFD700] transition-all duration-200 ease-in-out rounded-xl px-8 text-base group hover:bg-[#FFED4E]" style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}>
+              <button className="relative inline-flex justify-center items-center leading-5 text-center cursor-pointer whitespace-nowrap outline-none font-semibold h-12 text-black bg-[hsl(174,62%,56%)] transition-all duration-200 ease-in-out rounded-xl px-8 text-base group hover:bg-[hsl(174,62%,66%)]" style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}>
                 <span className="relative z-10 flex items-center gap-2">
                   Learn how it works
                   <ArrowRight className="w-4 h-4 transition-transform duration-150 group-hover:translate-x-1" />
@@ -162,7 +162,7 @@ export const BankingScaleHero = () => {
                 className="bg-zinc-900/50 rounded-2xl p-6 border border-white/10"
               >
                 <div className="text-xs text-zinc-400 uppercase tracking-wider font-semibold mb-3" style={{ fontFamily: "var(--font-mono), 'JetBrains Mono', ui-monospace, monospace" }}>GAS FEES</div>
-                <div className="text-4xl font-bold text-[#FFD700]" style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}>$0</div>
+                <div className="text-4xl font-bold text-[hsl(174,62%,56%)]" style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}>$0</div>
               </motion.div>
 
               {/* Uptime Card */}
@@ -226,7 +226,7 @@ export const BankingScaleHero = () => {
                       className="flex flex-col gap-2"
                     >
                       <span
-                        className="text-3xl font-semibold leading-tight tracking-tight text-[#FFD700]"
+                        className="text-3xl font-semibold leading-tight tracking-tight text-[hsl(174,62%,56%)]"
                         style={{
                           fontFamily: "var(--font-sans), Space Grotesk, sans-serif",
                         }}

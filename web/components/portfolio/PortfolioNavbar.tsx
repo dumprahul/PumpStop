@@ -45,7 +45,7 @@ export function PortfolioNavbar() {
               style={{
                 fontFamily: "Figtree",
                 fontWeight: 800,
-                color: "#FFD700",
+                color: "hsl(174,62%,56%)",
                 letterSpacing: "-0.02em",
               }}
             >

@@ -22,8 +22,7 @@ export const ProductTeaserCard = (props: ProductTeaserCardProps) => {
     dailyVolume = "$2.4B",
     dailyVolumeLabel = "PROCESSING",
     headline = "Settle Trades in Milliseconds",
-    subheadline = "Deploy real-time trading infrastructure in minutes. Scale effortlessly with enterprise-grade security and seamless integrations.",
-    description = "Powered by Pyth oracle prices and Circle's USDC, trade synthetic perpetuals with up to 10x leverage entirely on-chain.",
+    subheadline = "A pro trading layer on top of RobinPump.fun that gives traders CEX-grade tools without giving up custody.",
     // Use local TradingView-style candles video by default
     videoSrc = "/candles.mp4",
     posterSrc = "",
@@ -90,40 +89,41 @@ export const ProductTeaserCard = (props: ProductTeaserCardProps) => {
             {/* Buttons */}
             <div className="flex flex-wrap gap-4 mb-10">
               <Link
-                href={primaryButtonHref}
-                className="inline-flex items-center gap-2 bg-white text-black px-6 py-3.5 rounded-xl font-semibold text-base hover:bg-zinc-100 transition-all duration-200 shadow-lg hover:shadow-xl"
+                href="/markets"
+                className="inline-flex items-center gap-2 bg-[hsl(174,62%,56%)] text-black px-8 py-4 rounded-xl font-semibold text-base hover:bg-[hsl(174,62%,66%)] transition-all duration-200"
                 style={{
                   fontFamily: "var(--font-sans), Space Grotesk, sans-serif",
                 }}
               >
-                {primaryButtonText}
+                Start Trading
                 <ArrowRight className="w-4 h-4" />
               </Link>
-              <button
-                className="inline-flex items-center gap-2 bg-transparent border-2 border-white text-white px-6 py-3.5 rounded-xl font-semibold text-base hover:bg-white/5 transition-all duration-200"
+              <Link
+                href="/perpetuals"
+                className="inline-flex items-center gap-2 bg-transparent border-2 border-white text-white px-8 py-4 rounded-xl font-semibold text-base hover:bg-white/5 transition-all duration-200"
                 style={{
                   fontFamily: "var(--font-sans), Space Grotesk, sans-serif",
                 }}
               >
-                <Play className="w-4 h-4" />
-                {secondaryButtonText}
-              </button>
+                Start Perps
+                <ArrowRight className="w-4 h-4" />
+              </Link>
             </div>
 
-            {/* Teams Building */}
+            {/* Trader Stats */}
             <div className="flex items-center gap-3">
               <div className="flex -space-x-2">
                 {[1, 2, 3, 4].map((i) => (
                   <div
                     key={i}
-                    className="w-8 h-8 rounded-full bg-gradient-to-br from-[hsl(174,62%,56%)] to-[hsl(174,62%,40%)] border-2 border-black flex items-center justify-center text-xs font-bold text-white"
+                    className="w-10 h-10 rounded-full bg-gradient-to-br from-[hsl(174,62%,56%)] to-[hsl(174,62%,40%)] border-2 border-black flex items-center justify-center text-sm font-bold text-black"
                   >
                     {i}
                   </div>
                 ))}
               </div>
-              <span className="text-sm text-zinc-400 font-medium">
-                2,400+ teams building
+              <span className="text-base text-zinc-300 font-medium" style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}>
+                2,400+ traders building
               </span>
             </div>
           </motion.div>
