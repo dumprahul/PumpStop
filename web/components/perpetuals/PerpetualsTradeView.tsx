@@ -184,6 +184,11 @@ function TokenLogo({ ticker, size = "md" }: { ticker: string; size?: "sm" | "md"
     lg: "text-xs",
   }
   
+  // Use custom USDC logo URL
+  const logoUrl = ticker === "USDC" 
+    ? "https://static.vecteezy.com/system/resources/previews/044/626/814/non_2x/usdc-logo-on-transparent-background-free-vector.jpg"
+    : getLogoUrl(ticker)
+  
   if (imgError) {
     const bg = fallbackColors[ticker] || "from-[#FFD700] to-amber-500"
     return (
@@ -202,7 +207,7 @@ function TokenLogo({ ticker, size = "md" }: { ticker: string; size?: "sm" | "md"
   
   return (
     <img
-      src={getLogoUrl(ticker)}
+      src={logoUrl}
       alt={`${ticker} logo`}
       className={cn("rounded-full shrink-0 object-cover", sizeClasses[size])}
       onError={() => setImgError(true)}

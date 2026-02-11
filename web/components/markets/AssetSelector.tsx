@@ -80,12 +80,16 @@ export function AssetSelector({
       >
         <div
           className={cn(
-            "w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold",
-            selectedAsset.ticker === "USDC" ? "bg-blue-500" : selectedAsset.iconBg
+            "w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold overflow-hidden",
+            selectedAsset.ticker !== "USDC" && selectedAsset.iconBg
           )}
         >
           {selectedAsset.ticker === "USDC" ? (
-            "$"
+            <img
+              src="https://static.vecteezy.com/system/resources/previews/044/626/814/non_2x/usdc-logo-on-transparent-background-free-vector.jpg"
+              alt="USDC"
+              className="w-6 h-6 object-cover rounded-full"
+            />
           ) : (
             <img
               src={getStockLogoUrl(selectedAsset.ticker)}
@@ -133,12 +137,16 @@ export function AssetSelector({
                 >
                   <div
                     className={cn(
-                      "w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0",
-                      asset.ticker === "USDC" ? "bg-blue-500" : asset.iconBg
+                      "w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 overflow-hidden",
+                      asset.ticker !== "USDC" && asset.iconBg
                     )}
                   >
                     {asset.ticker === "USDC" ? (
-                      "$"
+                      <img
+                        src="https://static.vecteezy.com/system/resources/previews/044/626/814/non_2x/usdc-logo-on-transparent-background-free-vector.jpg"
+                        alt="USDC"
+                        className="w-8 h-8 object-cover rounded-full"
+                      />
                     ) : (
                       <img
                         src={getStockLogoUrl(asset.ticker)}
