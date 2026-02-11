@@ -4,7 +4,7 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 import { TrendingUp, TrendingDown, Radio } from "lucide-react"
 import type { AssetWithQuote } from "@/hooks/useStockQuotes"
-import { cn, getStockLogoUrl } from "@/lib/utils"
+import { cn, getCryptoLogoUrl } from "@/lib/utils"
 
 function ColumnItem({
   asset,
@@ -24,9 +24,9 @@ function ColumnItem({
     >
       <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 bg-muted overflow-hidden">
         <img
-          src={getStockLogoUrl(asset.ticker)}
+          src={getCryptoLogoUrl(asset.ticker)}
           alt={asset.ticker}
-          className="w-9 h-9 object-cover"
+          className="w-9 h-9 object-cover rounded-full"
         />
       </div>
       <div className="min-w-0 flex-1">
@@ -37,7 +37,11 @@ function ColumnItem({
       </div>
       <div className="text-right flex-shrink-0">
         <p className="text-sm font-semibold text-foreground">
-          ${asset.price.toFixed(2)}
+          ${asset.price >= 1 
+            ? asset.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+            : asset.price >= 0.01
+            ? asset.price.toFixed(4)
+            : asset.price.toFixed(6)}
         </p>
         {type === "gainers" && (
           <p

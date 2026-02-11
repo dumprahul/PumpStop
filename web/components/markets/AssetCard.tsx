@@ -4,7 +4,7 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 import { TrendingUp, TrendingDown, Radio } from "lucide-react"
 import { Sparkline } from "./Sparkline"
-import { cn, getStockLogoUrl } from "@/lib/utils"
+import { cn, getCryptoLogoUrl } from "@/lib/utils"
 
 import type { AssetData } from "@/lib/sparkline-data"
 
@@ -60,9 +60,9 @@ export function AssetCard({
           <div className="flex items-center gap-3 min-w-0">
             <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 bg-muted overflow-hidden">
               <img
-                src={getStockLogoUrl(asset.ticker)}
+                src={getCryptoLogoUrl(asset.ticker)}
                 alt={asset.ticker}
-                className="w-10 h-10 object-cover"
+                className="w-10 h-10 object-cover rounded-full"
               />
             </div>
             <div className="min-w-0">
@@ -91,7 +91,11 @@ export function AssetCard({
             transition={{ duration: 0.3 }}
             className="text-2xl font-bold text-foreground tracking-tight tabular-nums"
           >
-            ${asset.price.toFixed(2)}
+            ${asset.price >= 1 
+              ? asset.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+              : asset.price >= 0.01
+              ? asset.price.toFixed(4)
+              : asset.price.toFixed(6)}
           </motion.p>
           <div
             className={cn(

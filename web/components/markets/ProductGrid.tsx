@@ -9,13 +9,13 @@ import { cn } from "@/lib/utils"
 
 const FILTER_OPTIONS = [
   "All assets",
-  "ETF",
-  "Technology",
-  "Consumer",
-  "Financials",
+  "Layer 1",
+  "Layer 2",
+  "DeFi",
+  "Meme",
   "Large Cap",
-  "Growth",
-  "Value",
+  "Oracle",
+  "Storage",
 ]
 
 const SORT_OPTIONS = [
@@ -75,7 +75,7 @@ export function ProductGrid({ assets, loading, error, onRefetch }: ProductGridPr
       >
         <div className="flex items-center gap-3 flex-wrap">
           <h1 className="text-3xl font-semibold text-foreground tracking-tight">
-            Explore Assets
+            Explore Cryptocurrencies
           </h1>
           {assets.some((a) => a.isLive) && (
             <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/15 text-emerald-300 text-sm font-medium">
@@ -85,7 +85,7 @@ export function ProductGrid({ assets, loading, error, onRefetch }: ProductGridPr
           )}
         </div>
         <p className="text-muted-foreground text-sm mt-1">
-          Real-time data • Updates every minute
+          Real-time data from Bybit • WebSocket updates
         </p>
       </motion.div>
 
@@ -101,7 +101,7 @@ export function ProductGrid({ assets, loading, error, onRefetch }: ProductGridPr
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <input
               type="text"
-              placeholder="Search asset name or ticker"
+              placeholder="Search crypto name or ticker (e.g., BTC, Ethereum)"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-muted border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-muted focus:border-border transition-all duration-200"
