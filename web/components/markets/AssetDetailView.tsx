@@ -14,13 +14,24 @@ import {
 import { ChevronDown, ArrowDown, HelpCircle, Copy, Loader2 } from "lucide-react"
 import type { AssetData } from "@/lib/sparkline-data"
 import { useAssetDetail } from "@/hooks/useAssetDetail"
-import { cn, getStockLogoUrl } from "@/lib/utils"
+import { cn, getStockLogoUrl, getCryptoLogoUrl } from "@/lib/utils"
 import { CHAIN_LOGOS, BLOCK_EXPLORER_BASE, getChainOptionByChainId } from "@/lib/chains"
 import { useYellowNetwork } from "@/lib/yellowNetwork/YellowNetworkContext"
 import { YELLOW_CONFIG } from "@/lib/yellowNetwork/config"
 import { useAccount } from "wagmi"
 import { toast } from "sonner"
 import { AssetSelector, type PaymentAsset } from "./AssetSelector"
+
+// Crypto tickers set
+const CRYPTO_TICKERS = new Set([
+  "BTC", "ETH", "SOL", "LINK", "SUI", "DOGE", "XRP",
+  "AVAX", "ATOM", "ADA", "DOT", "LTC", "ARB", "OP",
+  "PEPE", "WIF", "BONK", "SEI", "APT", "FIL", "NEAR", "INJ", "TIA"
+])
+
+function isCryptoTicker(ticker: string): boolean {
+  return CRYPTO_TICKERS.has(ticker.toUpperCase())
+}
 
 const CHART_RANGES = [
   { key: "1D", label: "1D" },
@@ -339,9 +350,9 @@ export function AssetDetailView({ asset }: { asset: AssetData }) {
           <div className="flex items-start gap-4">
             <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 bg-muted overflow-hidden">
               <img
-                src={getStockLogoUrl(liveData.ticker)}
+                src={isCryptoTicker(liveData.ticker) ? getCryptoLogoUrl(liveData.ticker) : getStockLogoUrl(liveData.ticker)}
                 alt={liveData.ticker}
-                className="w-12 h-12 object-cover"
+                className={cn("w-12 h-12 object-cover", isCryptoTicker(liveData.ticker) && "rounded-full")}
               />
             </div>
             <div className="flex-1 min-w-0">
@@ -362,7 +373,11 @@ export function AssetDetailView({ asset }: { asset: AssetData }) {
                 ) : (
                   <>
                     <span className="text-3xl font-bold text-foreground">
-                      ${liveData.price.toFixed(2)}
+                      ${liveData.price >= 1 
+                        ? liveData.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+                        : liveData.price >= 0.01
+                        ? liveData.price.toFixed(4)
+                        : liveData.price.toFixed(6)}
                     </span>
                     <span
                       className={cn(
@@ -370,9 +385,11 @@ export function AssetDetailView({ asset }: { asset: AssetData }) {
                         positive ? "text-emerald-500" : "text-red-500"
                       )}
                     >
-                      {positive ? "▲" : "▼"} ${Math.abs(liveData.change24h).toFixed(2)} (
+                      {positive ? "▲" : "▼"} ${Math.abs(liveData.change24h) >= 0.01 
+                        ? Math.abs(liveData.change24h).toFixed(2) 
+                        : Math.abs(liveData.change24h).toFixed(6)} (
                       {positive ? "+" : ""}
-                      {liveData.change24hPercent.toFixed(4)}%) 24H
+                      {liveData.change24hPercent.toFixed(2)}%) 24H
                     </span>
                   </>
                 )}
@@ -784,7 +801,7 @@ export function AssetDetailView({ asset }: { asset: AssetData }) {
                   <div className="flex items-center gap-2 flex-shrink-0">
                     <div className="w-6 h-6 rounded-full flex items-center justify-center overflow-hidden bg-muted">
                       <img
-                        src={getStockLogoUrl(liveData.ticker)}
+                        src={isCryptoTicker(liveData.ticker) ? getCryptoLogoUrl(liveData.ticker) : getStockLogoUrl(liveData.ticker)}
                         alt={liveData.ticker}
                         className="w-6 h-6 object-cover"
                       />

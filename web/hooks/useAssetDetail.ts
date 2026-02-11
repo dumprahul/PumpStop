@@ -1,7 +1,9 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import type { AssetData } from "@/lib/sparkline-data"
+import { useBybitTickers } from "./useBybitTickers"
+import { tickerToBybitSymbol } from "@/lib/bybit"
 
 export type AssetDetailData = AssetData & {
   price: number
@@ -13,8 +15,18 @@ export type AssetDetailData = AssetData & {
   isLoading: boolean
 }
 
+// Crypto tickers set
+const CRYPTO_TICKERS = new Set([
+  "BTC", "ETH", "SOL", "LINK", "SUI", "DOGE", "XRP",
+  "AVAX", "ATOM", "ADA", "DOT", "LTC", "ARB", "OP",
+  "PEPE", "WIF", "BONK", "SEI", "APT", "FIL", "NEAR", "INJ", "TIA"
+])
+
 export function useAssetDetail(asset: AssetData) {
-  const [data, setData] = useState<AssetDetailData>({
+  const { tickers } = useBybitTickers()
+  const isCrypto = CRYPTO_TICKERS.has(asset.ticker.toUpperCase())
+  
+  const [stockData, setStockData] = useState<AssetDetailData>({
     ...asset,
     price: asset.price,
     change24h: asset.change24h,
@@ -22,10 +34,35 @@ export function useAssetDetail(asset: AssetData) {
     sparklineData: asset.sparklineData,
     chartData: asset.sparklineData.map((v, i) => ({ time: i, value: v })),
     candlesData: null,
-    isLoading: true,
+    isLoading: !isCrypto,
   })
 
+  // For cryptos, get live data from Bybit using useMemo to avoid re-render loops
+  const cryptoData = useMemo(() => {
+    if (!isCrypto) return null
+
+    const symbol = tickerToBybitSymbol(asset.ticker.toUpperCase())
+    if (!symbol) return null
+
+    const bybitData = tickers.get(symbol)
+    if (!bybitData) return null
+
+    return {
+      ...asset,
+      price: bybitData.price,
+      change24h: bybitData.change24h,
+      change24hPercent: bybitData.changePct24h,
+      sparklineData: generateSparkline(bybitData.price, bybitData.changePct24h),
+      chartData: generateSparkline(bybitData.price, bybitData.changePct24h).map((v, i) => ({ time: i, value: v })),
+      candlesData: null,
+      isLoading: false,
+    }
+  }, [isCrypto, asset, tickers])
+
+  // Fetch stock data for non-crypto assets
   useEffect(() => {
+    if (isCrypto) return // Skip for cryptos
+
     let cancelled = false
 
     async function fetchData() {
@@ -62,10 +99,10 @@ export function useAssetDetail(asset: AssetData) {
           updates.candlesData = candles
         }
 
-        setData((prev) => ({ ...prev, ...updates }))
+        setStockData((prev) => ({ ...prev, ...updates }))
       } catch {
         if (!cancelled) {
-          setData((prev) => ({ ...prev, isLoading: false }))
+          setStockData((prev) => ({ ...prev, isLoading: false }))
         }
       }
     }
@@ -74,9 +111,10 @@ export function useAssetDetail(asset: AssetData) {
     return () => {
       cancelled = true
     }
-  }, [asset.ticker, asset.id])
+  }, [asset.ticker, asset.id, isCrypto])
 
-  return data
+  // Return crypto data if available, otherwise stock data
+  return cryptoData || stockData
 }
 
 function generateSparkline(currentPrice: number, changePercent: number, points = 24): number[] {
