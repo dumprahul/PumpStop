@@ -508,23 +508,23 @@ export function PerpetualsTradeView() {
 
   const candleError = bybitCandleError
 
-  // Debug: Log when candle data changes
-  useEffect(() => {
-    if (candleData.length > 0) {
-      const lastCandle = candleData[candleData.length - 1]
-      const timeNum = typeof lastCandle.time === 'number' ? lastCandle.time : Number(lastCandle.time)
-      console.log(`📊 [PerpetualsTradeView] Candle data updated for ${selectedTicker}:`, {
-        count: candleData.length,
-        lastCandle: {
-          time: new Date(timeNum * 1000).toLocaleTimeString(),
-          O: lastCandle.open,
-          H: lastCandle.high,
-          L: lastCandle.low,
-          C: lastCandle.close
-        }
-      })
-    }
-  }, [candleData, selectedTicker])
+  // Debug: Log when candle data changes (disabled for performance)
+  // useEffect(() => {
+  //   if (candleData.length > 0) {
+  //     const lastCandle = candleData[candleData.length - 1]
+  //     const timeNum = typeof lastCandle.time === 'number' ? lastCandle.time : Number(lastCandle.time)
+  //     console.log(`📊 [PerpetualsTradeView] Candle data updated for ${selectedTicker}:`, {
+  //       count: candleData.length,
+  //       lastCandle: {
+  //         time: new Date(timeNum * 1000).toLocaleTimeString(),
+  //         O: lastCandle.open,
+  //         H: lastCandle.high,
+  //         L: lastCandle.low,
+  //         C: lastCandle.close
+  //       }
+  //     })
+  //   }
+  // }, [candleData, selectedTicker])
 
   // Filter markets based on allowed tickers, search, and tab
   const filteredMarkets = useMemo(() => {

@@ -10,7 +10,7 @@ import {
 } from "@/lib/bybit"
 
 /** Log stream data to console (enable in dev) */
-const LOG_STREAM = true
+const LOG_STREAM = false
 
 function logStream(label: string, data: unknown) {
   if (typeof window !== "undefined" && LOG_STREAM) {
@@ -66,20 +66,78 @@ export function useBybitKline(ticker: string, timeframe: string) {
   const [error, setError] = useState<string | null>(null)
   const wsRef = useRef<WebSocket | null>(null)
   const reconnectTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const lastUpdateRef = useRef<number>(0)
+  const pendingCandleRef = useRef<OHLCData | null>(null)
+  const updateTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const mergeCandle = useCallback((candle: OHLCData) => {
-    setData((prev) => {
-      const idx = prev.findIndex((c) => c.time === candle.time)
-      let next: OHLCData[]
-      if (idx >= 0) {
-        next = [...prev]
-        next[idx] = candle
-      } else {
-        next = [...prev, candle]
-        next.sort((a, b) => a.time - b.time)
+  const mergeCandle = useCallback((candle: OHLCData, confirmed: boolean = false) => {
+    const now = Date.now()
+    
+    // For confirmed candles, update immediately
+    if (confirmed) {
+      pendingCandleRef.current = null
+      if (updateTimerRef.current) {
+        clearTimeout(updateTimerRef.current)
+        updateTimerRef.current = null
       }
-      return next
-    })
+      lastUpdateRef.current = now
+      
+      setData((prev) => {
+        const idx = prev.findIndex((c) => c.time === candle.time)
+        let next: OHLCData[]
+        if (idx >= 0) {
+          next = [...prev]
+          next[idx] = candle
+        } else {
+          next = [...prev, candle]
+          next.sort((a, b) => a.time - b.time)
+        }
+        return next
+      })
+      return
+    }
+    
+    // For unconfirmed candles, throttle updates to max once per second
+    pendingCandleRef.current = candle
+    
+    const timeSinceLastUpdate = now - lastUpdateRef.current
+    if (timeSinceLastUpdate >= 1000) {
+      // Update immediately if it's been more than 1 second
+      lastUpdateRef.current = now
+      setData((prev) => {
+        const idx = prev.findIndex((c) => c.time === candle.time)
+        let next: OHLCData[]
+        if (idx >= 0) {
+          next = [...prev]
+          next[idx] = candle
+        } else {
+          next = [...prev, candle]
+          next.sort((a, b) => a.time - b.time)
+        }
+        return next
+      })
+    } else if (!updateTimerRef.current) {
+      // Schedule an update for later
+      updateTimerRef.current = setTimeout(() => {
+        updateTimerRef.current = null
+        if (pendingCandleRef.current) {
+          lastUpdateRef.current = Date.now()
+          const pendingCandle = pendingCandleRef.current
+          setData((prev) => {
+            const idx = prev.findIndex((c) => c.time === pendingCandle.time)
+            let next: OHLCData[]
+            if (idx >= 0) {
+              next = [...prev]
+              next[idx] = pendingCandle
+            } else {
+              next = [...prev, pendingCandle]
+              next.sort((a, b) => a.time - b.time)
+            }
+            return next
+          })
+        }
+      }, 1000 - timeSinceLastUpdate)
+    }
   }, [])
 
   useEffect(() => {
@@ -144,9 +202,11 @@ export function useBybitKline(ticker: string, timeframe: string) {
           logStream("Message", msg)
 
           if (msg.topic === topic && msg.data?.length) {
-            const candle = wsCandleToOHLC(msg.data[0])
-            logStream("Candle update", candle)
-            mergeCandle(candle)
+            const rawCandle = msg.data[0]
+            const candle = wsCandleToOHLC(rawCandle)
+            const confirmed = rawCandle.confirm ?? false
+            logStream("Candle update", { candle, confirmed })
+            mergeCandle(candle, confirmed)
           }
         } catch {
           // ignore parse errors
@@ -175,10 +235,15 @@ export function useBybitKline(ticker: string, timeframe: string) {
         clearTimeout(reconnectTimeoutRef.current)
         reconnectTimeoutRef.current = null
       }
+      if (updateTimerRef.current) {
+        clearTimeout(updateTimerRef.current)
+        updateTimerRef.current = null
+      }
       if (wsRef.current) {
         wsRef.current.close()
         wsRef.current = null
       }
+      pendingCandleRef.current = null
     }
   }, [symbol, interval, isSupported, mergeCandle])
 
