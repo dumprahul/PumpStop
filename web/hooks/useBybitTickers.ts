@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react"
 import { BYBIT_WS_URL, BYBIT_REST_URL, tickerToBybitSymbol } from "@/lib/bybit"
 
-const LOG_STREAM = true
+const LOG_STREAM = false
 
 function logStream(label: string, data: unknown) {
   if (typeof window !== "undefined" && LOG_STREAM) {

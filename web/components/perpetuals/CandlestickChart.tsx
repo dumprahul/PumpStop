@@ -184,6 +184,7 @@ export function CandlestickChartComponent({
   const indicatorSeriesRef = useRef<Map<string, ISeriesApi<any>>>(new Map())
   const lastDataKeyRef = useRef<string>("")
   const lastIndicatorsRef = useRef<string>("")
+  const lastDataLengthRef = useRef<number>(0)
   const data = propData ?? generateMockCandleData(basePrice, 100)
 
   const createChartInstance = useCallback(() => {
@@ -444,9 +445,11 @@ export function CandlestickChartComponent({
     const keyChanged = lastDataKeyRef.current !== dataKey
     const indicatorsKey = indicators.sort().join(",")
     const indicatorsChanged = lastIndicatorsRef.current !== indicatorsKey
+    const dataLengthChanged = lastDataLengthRef.current !== data.length
     
     if (keyChanged) {
       lastDataKeyRef.current = dataKey
+      lastDataLengthRef.current = 0
       indicatorSeriesRef.current.clear()
       if (chartRef.current) {
         chartRef.current.remove()
@@ -488,22 +491,56 @@ export function CandlestickChartComponent({
       updateIndicators(chart, data, indicators)
       
       chart.timeScale().fitContent()
+      lastDataLengthRef.current = data.length
     } else {
-      // Update existing series
-      if (chartType === "line" || chartType === "area") {
-        const lineFmt = toLineFormat(data)
-        mainSeries.setData(lineFmt)
-      } else {
-        const candleFmt = toChartFormat(data)
-        mainSeries.setData(candleFmt)
-      }
+      // Use incremental updates for better performance
+      const prevLength = lastDataLengthRef.current
       
-      const volData = data.map((d) => ({
-        time: (typeof d.time === "number" ? d.time : Math.floor(Number(d.time))) as import("lightweight-charts").UTCTimestamp,
-        value: d.volume ?? 0,
-        color: d.close >= d.open ? "rgba(34, 197, 94, 0.3)" : "rgba(239, 68, 68, 0.3)",
-      }))
-      volumeSeries?.setData(volData)
+      if (dataLengthChanged || data.length === 0) {
+        // Data length changed (new candle) or major change - use setData
+        if (chartType === "line" || chartType === "area") {
+          const lineFmt = toLineFormat(data)
+          mainSeries.setData(lineFmt)
+        } else {
+          const candleFmt = toChartFormat(data)
+          mainSeries.setData(candleFmt)
+        }
+        
+        const volData = data.map((d) => ({
+          time: (typeof d.time === "number" ? d.time : Math.floor(Number(d.time))) as import("lightweight-charts").UTCTimestamp,
+          value: d.volume ?? 0,
+          color: d.close >= d.open ? "rgba(34, 197, 94, 0.3)" : "rgba(239, 68, 68, 0.3)",
+        }))
+        volumeSeries?.setData(volData)
+        lastDataLengthRef.current = data.length
+      } else if (data.length > 0) {
+        // Only last candle changed - use update for smooth animation
+        const lastCandle = data[data.length - 1]
+        
+        if (chartType === "line" || chartType === "area") {
+          const candleData = {
+            time: (typeof lastCandle.time === "number" ? lastCandle.time : Math.floor(Number(lastCandle.time))) as import("lightweight-charts").UTCTimestamp,
+            value: lastCandle.close,
+          }
+          mainSeries.update(candleData)
+        } else {
+          const candleData = {
+            time: (typeof lastCandle.time === "number" ? lastCandle.time : Math.floor(Number(lastCandle.time))) as import("lightweight-charts").UTCTimestamp,
+            open: lastCandle.open,
+            high: lastCandle.high,
+            low: lastCandle.low,
+            close: lastCandle.close,
+          }
+          mainSeries.update(candleData)
+        }
+        
+        const volData = {
+          time: (typeof lastCandle.time === "number" ? lastCandle.time : Math.floor(Number(lastCandle.time))) as import("lightweight-charts").UTCTimestamp,
+          value: lastCandle.volume ?? 0,
+          color: lastCandle.close >= lastCandle.open ? "rgba(34, 197, 94, 0.3)" : "rgba(239, 68, 68, 0.3)",
+        }
+        volumeSeries?.update(volData)
+      }
       
       // Update indicators if changed
       if (indicatorsChanged && chartRef.current) {
