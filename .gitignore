@@ -6,3 +6,4 @@
 backend/bun.lock
 contracts/.env
 contracts/foundry.lock
+.claude/settings.local.json

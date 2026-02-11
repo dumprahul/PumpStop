@@ -14,7 +14,7 @@ import {SimpleConsensus} from "../src/adjudicators/SimpleConsensus.sol";
 /// - PRIVATE_KEY (required): broadcaster key
 contract DeployDeterministic is Script {
     // Salt for deterministic deployment - change this to get different addresses
-    bytes32 constant SALT = keccak256("median:v1");
+    bytes32 constant SALT = keccak256("median:v2");
 
     function run() external {
         uint256 pk = vm.envUint("PRIVATE_KEY");

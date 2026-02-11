@@ -70,7 +70,7 @@ function ChainLogo({
 
 // Sepolia addresses
 const USDC_ADDRESS = "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238" as const
-const CUSTODY_CONTRACT_ADDRESS = "0xc4afa9235be46a337850B33B12C222F6a3ba1EEC" as const
+const CUSTODY_CONTRACT_ADDRESS = "0xC2307D26194561eB939278456cF39a7AF0c115ea" as const
 
 const custodyContractABI = [
   {
