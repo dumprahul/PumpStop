@@ -238,35 +238,34 @@ export function PortfolioView() {
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         className="mb-8"
-        style={{ fontFamily: "var(--font-figtree), Figtree" }}
       >
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          <div className="rounded-2xl bg-card border border-border p-8 shadow-sm hover:shadow-lg transition-all overflow-hidden relative group">
+          <div className="rounded-2xl bg-zinc-900/50 border border-white/10 p-8 shadow-sm hover:shadow-lg transition-all overflow-hidden relative group">
             <div className="absolute top-0 right-0 w-40 h-40 rounded-full blur-3xl opacity-15 group-hover:opacity-25 transition-opacity bg-blue-500" />
             <div className="relative">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-blue-500/20 text-blue-500 shadow-inner">
+                <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-blue-500/20 text-blue-400 shadow-inner">
                   <Wallet className="w-7 h-7" />
                 </div>
                 <div>
-                  <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+                  <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider" style={{ fontFamily: "var(--font-mono), JetBrains Mono, monospace" }}>
                     Wallet
                   </span>
-                  <p className="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mt-0.5">
+                  <p className="text-3xl sm:text-4xl font-bold text-white tracking-tight mt-0.5" style={{ fontFamily: "var(--font-mono), JetBrains Mono, monospace" }}>
                     ${walletBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </p>
                 </div>
               </div>
-              <p className="text-sm text-muted-foreground mb-4">USDC across 5 chains — ready to deposit</p>
+              <p className="text-sm text-zinc-400 mb-4" style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}>USDC across 5 chains — ready to deposit</p>
               {isConnected && (
                 <div className="space-y-2 pt-4 border-t border-border">
                   {walletBalancesByChain.map(({ chain, balance }) => (
                     <div key={chain.id} className="flex items-center justify-between gap-2 text-sm">
                       <div className="flex items-center gap-2 min-w-0">
                         <ChainLogo chainId={chain.id} chainName={chain.name} />
-                        <span className="text-muted-foreground truncate">{chain.name}</span>
+                        <span className="text-zinc-400 truncate" style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}>{chain.name}</span>
                       </div>
-                      <span className="font-medium text-foreground flex-shrink-0">
+                      <span className="font-semibold text-white flex-shrink-0" style={{ fontFamily: "var(--font-mono), JetBrains Mono, monospace" }}>
                         ${balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </span>
                     </div>
@@ -276,50 +275,50 @@ export function PortfolioView() {
             </div>
           </div>
 
-          <div className="rounded-2xl bg-card border-2 border-[hsl(174,62%,56%)]/40 p-8 shadow-sm hover:shadow-lg transition-all overflow-hidden relative group bg-gradient-to-br from-[hsl(174,62%,56%)]/8 to-transparent">
+          <div className="rounded-2xl bg-gradient-to-br from-[hsl(174,62%,56%)]/10 to-transparent border-2 border-[hsl(174,62%,56%)]/30 p-8 shadow-sm hover:shadow-lg transition-all overflow-hidden relative group">
             <div className="absolute top-0 right-0 w-40 h-40 rounded-full blur-3xl opacity-25 group-hover:opacity-35 transition-opacity" style={{ background: "hsl(174,62%,56%)" }} />
             <div className="relative">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-inner" style={{ background: "hsla(174,62%,56%,0.25)", color: "hsl(174,62%,56%)" }}>
-                  <Layers className="w-7 h-7" />
+                <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-inner bg-[hsl(174,62%,56%)]/20">
+                  <Layers className="w-7 h-7 text-[hsl(174,62%,56%)]" />
                 </div>
                 <div>
-                  <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: "hsl(174,62%,56%)" }}>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-[hsl(174,62%,56%)]" style={{ fontFamily: "var(--font-mono), JetBrains Mono, monospace" }}>
                     Trading
                   </span>
-                  <p className="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mt-0.5">
+                  <p className="text-3xl sm:text-4xl font-bold text-white tracking-tight mt-0.5" style={{ fontFamily: "var(--font-mono), JetBrains Mono, monospace" }}>
                     ${unifiedUsdcBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </p>
                 </div>
               </div>
-              <p className="text-sm text-muted-foreground">Instant balance for orders — deposit to add funds</p>
+              <p className="text-sm text-zinc-400" style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}>Instant balance for orders — deposit to add funds</p>
             </div>
           </div>
 
-          <div className="rounded-2xl bg-card border border-border p-8 shadow-sm hover:shadow-lg transition-all overflow-hidden relative group">
+          <div className="rounded-2xl bg-zinc-900/50 border border-white/10 p-8 shadow-sm hover:shadow-lg transition-all overflow-hidden relative group">
             <div className="absolute bottom-0 right-0 w-32 h-32 rounded-full blur-3xl opacity-10 group-hover:opacity-20 transition-opacity bg-violet-500" />
             <div className="relative flex flex-col h-full justify-between">
               <div>
                 <div className="flex items-center gap-2 mb-4">
-                  <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-violet-500/15 text-violet-500 shadow-inner">
+                  <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-violet-500/15 text-violet-400 shadow-inner">
                     <Sparkles className="w-7 h-7" />
                   </div>
-                  <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+                  <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider" style={{ fontFamily: "var(--font-mono), JetBrains Mono, monospace" }}>
                     Portfolio
                   </span>
                 </div>
-                <p className="text-3xl sm:text-4xl font-bold text-foreground tracking-tight">
+                <p className="text-3xl sm:text-4xl font-bold text-white tracking-tight" style={{ fontFamily: "var(--font-mono), JetBrains Mono, monospace" }}>
                   ${totalPortfolioValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </p>
               </div>
-              <div className="mt-4 pt-4 border-t border-border space-y-1">
+              <div className="mt-4 pt-4 border-t border-white/10 space-y-1">
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Liquid (USDC)</span>
-                  <span className="font-medium text-foreground">${liquidValue.toFixed(2)}</span>
+                  <span className="text-zinc-400" style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}>Liquid (USDC)</span>
+                  <span className="font-semibold text-white" style={{ fontFamily: "var(--font-mono), JetBrains Mono, monospace" }}>${liquidValue.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Stocks</span>
-                  <span className="font-medium text-foreground">${nonLiquidValue.toFixed(2)}</span>
+                  <span className="text-zinc-400" style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}>Stocks</span>
+                  <span className="font-semibold text-white" style={{ fontFamily: "var(--font-mono), JetBrains Mono, monospace" }}>${nonLiquidValue.toFixed(2)}</span>
                 </div>
               </div>
             </div>
@@ -329,27 +328,27 @@ export function PortfolioView() {
         {/* Timeframe selector */}
         <div className="mt-6 flex items-center justify-between gap-4 flex-wrap">
           <div
-            className="flex items-center rounded-lg p-1 bg-muted/50 border border-border w-fit"
-            style={{ fontFamily: "var(--font-figtree), Figtree" }}
+            className="flex items-center rounded-lg p-1 bg-zinc-900 border border-white/10 w-fit"
           >
             {TIME_FRAMES.map((frame) => (
               <button
                 key={frame}
                 onClick={() => setSelectedFrame(frame)}
                 className={cn(
-                  "px-4 py-2 text-sm font-medium rounded-md transition-all",
+                  "px-4 py-2 text-sm font-semibold rounded-md transition-all",
                   selectedFrame === frame
-                    ? "bg-background text-foreground shadow-sm border border-border"
-                    : "text-muted-foreground hover:text-foreground"
+                    ? "bg-[hsl(174,62%,56%)] text-black shadow-sm"
+                    : "text-zinc-400 hover:text-white"
                 )}
+                style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}
               >
                 {frame}
               </button>
             ))}
           </div>
           {isConnected && (
-            <p className="text-sm text-muted-foreground">
-              Combined: <span className="font-semibold text-foreground">${liquidValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span> USDC liquid
+            <p className="text-sm text-zinc-400" style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}>
+              Combined: <span className="font-semibold text-white" style={{ fontFamily: "var(--font-mono), JetBrains Mono, monospace" }}>${liquidValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span> USDC liquid
             </p>
           )}
         </div>
@@ -362,11 +361,11 @@ export function PortfolioView() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="rounded-2xl bg-card border border-border p-6 flex flex-col"
+          className="rounded-2xl bg-zinc-900/50 border border-white/10 p-6 flex flex-col"
         >
           <h3
-            className="text-sm font-medium text-muted-foreground mb-4 uppercase tracking-wider"
-            style={{ fontFamily: "var(--font-figtree), Figtree" }}
+            className="text-xs font-semibold text-zinc-400 mb-4 uppercase tracking-wider"
+            style={{ fontFamily: "var(--font-mono), JetBrains Mono, monospace" }}
           >
             Asset Allocation
           </h3>
@@ -407,18 +406,18 @@ export function PortfolioView() {
                 >
                   <Wallet className="w-10 h-10 text-muted-foreground" />
                 </div>
-                <p className="text-sm text-muted-foreground mb-2">No assets yet</p>
-                <p className="text-xs text-muted-foreground max-w-[200px]">
+                <p className="text-sm text-zinc-400 mb-2" style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}>No assets yet</p>
+                <p className="text-xs text-zinc-400 max-w-[200px]" style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}>
                   Connect wallet and add funds to see your allocation
                 </p>
               </div>
             )}
           </div>
           {hasPortfolio && (
-            <div className="mt-4 pt-4 border-t border-border">
+            <div className="mt-4 pt-4 border-t border-white/10">
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Total portfolio</span>
-                <span className="font-bold text-foreground">${totalPortfolioValue.toFixed(2)}</span>
+                <span className="text-zinc-400" style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}>Total portfolio</span>
+                <span className="font-bold text-white" style={{ fontFamily: "var(--font-mono), JetBrains Mono, monospace" }}>${totalPortfolioValue.toFixed(2)}</span>
               </div>
             </div>
           )}
@@ -426,17 +425,17 @@ export function PortfolioView() {
             <div className="mt-4 flex flex-wrap gap-2">
               <button
                 onClick={() => setIsDepositModalOpen(true)}
-                className="flex-1 min-w-[80px] flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-medium"
-                style={{ background: "hsla(174,62%,56%,0.15)", color: "hsl(174,62%,56%)" }}
+                className="flex-1 min-w-[80px] flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-semibold bg-[hsl(174,62%,56%)] text-black hover:bg-[hsl(174,62%,66%)] transition-colors"
+                style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}
               >
-                <Plus className="w-3.5 h-3.5" /> Deposit
+                <Plus className="w-4 h-4" /> Deposit
               </button>
               <button
                 onClick={() => setIsWithdrawModalOpen(true)}
-                className="flex-1 min-w-[80px] flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-medium"
-                style={{ background: "hsla(174,62%,56%,0.15)", color: "hsl(174,62%,56%)" }}
+                className="flex-1 min-w-[80px] flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-semibold border-2 border-white/20 text-white hover:bg-white/5 transition-colors"
+                style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}
               >
-                <ArrowUpFromLine className="w-3.5 h-3.5" /> Withdraw
+                <ArrowUpFromLine className="w-4 h-4" /> Withdraw
               </button>
             </div>
           )}
@@ -447,18 +446,18 @@ export function PortfolioView() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.05 }}
-          className="rounded-2xl bg-card border border-border overflow-hidden flex flex-col"
+          className="rounded-2xl bg-zinc-900/50 border border-white/10 overflow-hidden flex flex-col"
         >
-          <div className="p-4 border-b border-border flex items-center justify-between">
+          <div className="p-6 border-b border-white/10 flex items-center justify-between">
             <div>
               <h3
-                className="text-sm font-medium text-foreground"
-                style={{ fontFamily: "var(--font-figtree), Figtree" }}
+                className="text-lg font-semibold text-white"
+                style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}
               >
                 Stock Holdings
               </h3>
               {isConnected && stockHoldings.length > 0 && (
-                <p className="text-xs text-muted-foreground mt-0.5">
+                <p className="text-xs text-zinc-400 mt-0.5" style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}>
                   {stockHoldings.length} stock{stockHoldings.length !== 1 ? "s" : ""} held: {stockHoldings.map((h) => h.ticker).join(", ")}
                 </p>
               )}
@@ -479,50 +478,50 @@ export function PortfolioView() {
                   <Settings className="w-4 h-4" />
                 </div>
               </div>
-              <p className="text-center text-muted-foreground mb-6 max-w-sm">
+              <p className="text-center text-zinc-400 mb-6 max-w-sm" style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}>
                 Connect your wallet to view your portfolio
               </p>
               <button
                 type="button"
                 onClick={() => openConnectModal?.()}
-                className="px-6 py-2.5 rounded-xl font-semibold text-background"
-                style={{ background: "hsl(174,62%,56%)", fontFamily: "var(--font-figtree), Figtree" }}
+                className="px-8 py-4 rounded-xl font-semibold text-black bg-[hsl(174,62%,56%)] hover:bg-[hsl(174,62%,66%)] transition-colors"
+                style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}
               >
                 Connect wallet
               </button>
             </div>
           ) : !hasPortfolio && stockHoldings.length === 0 ? (
             <div className="flex-1 flex flex-col items-center justify-center py-16 px-6">
-              <p className="text-center text-muted-foreground mb-6">
+              <p className="text-center text-zinc-400 mb-6" style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}>
                 Deposit funds to start trading
               </p>
               <button
                 type="button"
                 onClick={() => setIsDepositModalOpen(true)}
-                className="px-6 py-2.5 rounded-xl font-semibold text-background"
-                style={{ background: "hsl(174,62%,56%)", fontFamily: "var(--font-figtree), Figtree" }}
+                className="px-8 py-4 rounded-xl font-semibold text-black bg-[hsl(174,62%,56%)] hover:bg-[hsl(174,62%,66%)] transition-colors"
+                style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}
               >
                 Deposit funds
               </button>
             </div>
           ) : stockHoldings.length === 0 ? (
             <div className="flex-1 flex flex-col items-center justify-center py-16 px-6">
-              <p className="text-center text-muted-foreground">
+              <p className="text-center text-zinc-400" style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}>
                 No stock holdings. Trade on the Perpetuals page to open positions.
               </p>
               <Link
                 href="/perpetuals"
-                className="mt-4 px-6 py-2.5 rounded-xl font-semibold text-background"
-                style={{ background: "hsl(174,62%,56%)", fontFamily: "var(--font-figtree), Figtree" }}
+                className="mt-4 px-8 py-4 rounded-xl font-semibold text-black bg-[hsl(174,62%,56%)] hover:bg-[hsl(174,62%,66%)] transition-colors"
+                style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}
               >
                 Trade Perpetuals
               </Link>
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full" style={{ fontFamily: "var(--font-figtree), Figtree" }}>
+              <table className="w-full">
                 <thead>
-                  <tr className="bg-muted/30 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  <tr className="bg-zinc-900/30 text-xs font-semibold text-zinc-400 uppercase tracking-wider" style={{ fontFamily: "var(--font-mono), JetBrains Mono, monospace" }}>
                     <th className="text-left py-4 px-4">Asset</th>
                     <th className="text-right py-4 px-4">Price</th>
                     <th className="text-right py-4 px-4">Balance</th>
@@ -535,7 +534,7 @@ export function PortfolioView() {
                   {stockHoldings.map((holding) => (
                     <tr
                       key={holding.ticker}
-                      className="border-t border-border hover:bg-muted/20 transition-colors"
+                      className="border-t border-white/10 hover:bg-white/5 transition-colors"
                     >
                       <td className="py-4 px-4">
                         <Link
@@ -551,26 +550,27 @@ export function PortfolioView() {
                             }}
                           />
                           <div>
-                            <span className="font-medium text-foreground">{holding.ticker}</span>
-                            <span className="block text-xs text-muted-foreground">{holding.name}</span>
+                            <span className="font-semibold text-white" style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}>{holding.ticker}</span>
+                            <span className="block text-xs text-zinc-400" style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}>{holding.name}</span>
                           </div>
                         </Link>
                       </td>
-                      <td className="text-right py-4 px-4 font-medium text-foreground">
+                      <td className="text-right py-4 px-4 font-semibold text-white" style={{ fontFamily: "var(--font-mono), JetBrains Mono, monospace" }}>
                         ${holding.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </td>
-                      <td className="text-right py-4 px-4 text-foreground">
+                      <td className="text-right py-4 px-4 text-white" style={{ fontFamily: "var(--font-mono), JetBrains Mono, monospace" }}>
                         {holding.amount.toLocaleString(undefined, { maximumFractionDigits: 4 })}
                       </td>
-                      <td className="text-right py-4 px-4 font-semibold text-foreground">
+                      <td className="text-right py-4 px-4 font-bold text-white" style={{ fontFamily: "var(--font-mono), JetBrains Mono, monospace" }}>
                         ${holding.value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </td>
                       <td className="text-right py-4 px-4">
                         <span
                           className={cn(
-                            "inline-flex items-center gap-1 font-medium",
+                            "inline-flex items-center gap-1 font-semibold",
                             holding.change24hPercent >= 0 ? "text-emerald-500" : "text-red-500"
                           )}
+                          style={{ fontFamily: "var(--font-mono), JetBrains Mono, monospace" }}
                         >
                           {holding.change24hPercent >= 0 ? (
                             <TrendingUp className="w-3.5 h-3.5" />
@@ -581,7 +581,7 @@ export function PortfolioView() {
                           {holding.change24hPercent.toFixed(2)}%
                         </span>
                       </td>
-                      <td className="text-right py-4 px-4 text-muted-foreground">
+                      <td className="text-right py-4 px-4 text-zinc-400" style={{ fontFamily: "var(--font-mono), JetBrains Mono, monospace" }}>
                         {totalPortfolioValue > 0
                           ? ((holding.value / totalPortfolioValue) * 100).toFixed(1)
                           : "0"}
@@ -604,81 +604,73 @@ export function PortfolioView() {
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6"
       >
         <div
-          className="rounded-xl bg-card border border-border p-5"
-          style={{ fontFamily: "var(--font-figtree), Figtree" }}
+          className="rounded-xl bg-zinc-900/50 border border-white/10 p-5"
         >
           <div className="flex items-center gap-2 mb-3">
             <div
-              className="w-9 h-9 rounded-lg flex items-center justify-center"
-              style={{ background: "hsla(174,62%,56%,0.12)", color: "hsl(174,62%,56%)" }}
+              className="w-9 h-9 rounded-lg flex items-center justify-center bg-[hsl(174,62%,56%)]/15"
             >
-              <BarChart3 className="w-4 h-4" />
+              <BarChart3 className="w-4 h-4 text-[hsl(174,62%,56%)]" />
             </div>
-            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+            <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider" style={{ fontFamily: "var(--font-mono), JetBrains Mono, monospace" }}>
               Total Trades
             </span>
           </div>
-          <p className="text-xl font-bold text-foreground">--</p>
-          <p className="text-xs text-muted-foreground mt-1">Lifetime trade count</p>
+          <p className="text-2xl font-bold text-white" style={{ fontFamily: "var(--font-mono), JetBrains Mono, monospace" }}>--</p>
+          <p className="text-xs text-zinc-400 mt-1" style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}>Lifetime trade count</p>
         </div>
 
         <div
-          className="rounded-xl bg-card border border-border p-5"
-          style={{ fontFamily: "var(--font-figtree), Figtree" }}
+          className="rounded-xl bg-zinc-900/50 border border-white/10 p-5"
         >
           <div className="flex items-center gap-2 mb-3">
             <div
-              className="w-9 h-9 rounded-lg flex items-center justify-center"
-              style={{ background: "rgba(34,197,94,0.15)", color: "#22c55e" }}
+              className="w-9 h-9 rounded-lg flex items-center justify-center bg-emerald-500/15"
             >
-              <TrendingUp className="w-4 h-4" />
+              <TrendingUp className="w-4 h-4 text-emerald-400" />
             </div>
-            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+            <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider" style={{ fontFamily: "var(--font-mono), JetBrains Mono, monospace" }}>
               7D Realized PnL
             </span>
           </div>
-          <p className="text-xl font-bold text-foreground">$0.00</p>
-          <p className="text-xs text-emerald-500/80 mt-1">0.00% this week</p>
+          <p className="text-2xl font-bold text-white" style={{ fontFamily: "var(--font-mono), JetBrains Mono, monospace" }}>$0.00</p>
+          <p className="text-xs text-emerald-400 mt-1" style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}>0.00% this week</p>
         </div>
 
         <div
-          className="rounded-xl bg-card border border-border p-5"
-          style={{ fontFamily: "var(--font-figtree), Figtree" }}
+          className="rounded-xl bg-zinc-900/50 border border-white/10 p-5"
         >
           <div className="flex items-center gap-2 mb-3">
             <div
-              className="w-9 h-9 rounded-lg flex items-center justify-center"
-              style={{ background: "hsla(174,62%,56%,0.12)", color: "hsl(174,62%,56%)" }}
+              className="w-9 h-9 rounded-lg flex items-center justify-center bg-[hsl(174,62%,56%)]/15"
             >
-              <Target className="w-4 h-4" />
+              <Target className="w-4 h-4 text-[hsl(174,62%,56%)]" />
             </div>
-            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+            <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider" style={{ fontFamily: "var(--font-mono), JetBrains Mono, monospace" }}>
               7D Win Rate
             </span>
           </div>
-          <p className="text-xl font-bold text-foreground">0.00%</p>
-          <p className="text-xs text-muted-foreground mt-1">Profitable trades</p>
+          <p className="text-2xl font-bold text-white" style={{ fontFamily: "var(--font-mono), JetBrains Mono, monospace" }}>0.00%</p>
+          <p className="text-xs text-zinc-400 mt-1" style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}>Profitable trades</p>
         </div>
 
         <div
-          className="rounded-xl bg-card border border-border p-5"
-          style={{ fontFamily: "var(--font-figtree), Figtree" }}
+          className="rounded-xl bg-zinc-900/50 border border-white/10 p-5"
         >
           <div className="flex items-center gap-2 mb-3">
             <div
-              className="w-9 h-9 rounded-lg flex items-center justify-center"
-              style={{ background: "hsla(174,62%,56%,0.12)", color: "hsl(174,62%,56%)" }}
+              className="w-9 h-9 rounded-lg flex items-center justify-center bg-[hsl(174,62%,56%)]/15"
             >
-              <Zap className="w-4 h-4" />
+              <Zap className="w-4 h-4 text-[hsl(174,62%,56%)]" />
             </div>
-            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+            <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider" style={{ fontFamily: "var(--font-mono), JetBrains Mono, monospace" }}>
               Assets Held
             </span>
           </div>
-          <p className="text-xl font-bold text-foreground">
+          <p className="text-2xl font-bold text-white" style={{ fontFamily: "var(--font-mono), JetBrains Mono, monospace" }}>
             {stockHoldings.length > 0 ? stockHoldings.length : 0}
           </p>
-          <p className="text-xs text-muted-foreground mt-1">
+          <p className="text-xs text-zinc-400 mt-1" style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}>
             {stockHoldings.length === 1 ? "Unique position" : "Unique positions"}
           </p>
         </div>
