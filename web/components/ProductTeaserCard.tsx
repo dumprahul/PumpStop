@@ -1,6 +1,6 @@
 "use client"
 import { motion } from "framer-motion"
-import { ArrowUpRight } from "lucide-react"
+import { ArrowRight, Play } from "lucide-react"
 import Link from "next/link"
 type ProductTeaserCardProps = {
   dailyVolume?: string
@@ -20,175 +20,293 @@ type ProductTeaserCardProps = {
 export const ProductTeaserCard = (props: ProductTeaserCardProps) => {
   const {
     dailyVolume = "$2.4B",
-    dailyVolumeLabel = "DAILY TRADING VOLUME",
+    dailyVolumeLabel = "PROCESSING",
     headline = "Settle Trades in Milliseconds",
-    subheadline = "Traditional brokers settle in T+1. We settle in milliseconds using Yellow Network state channels — non-custodial, zero gas, instant execution.",
+    subheadline = "Deploy real-time trading infrastructure in minutes. Scale effortlessly with enterprise-grade security and seamless integrations.",
     description = "Powered by Pyth oracle prices and Circle's USDC, trade synthetic perpetuals with up to 10x leverage entirely on-chain.",
     // Use local TradingView-style candles video by default
     videoSrc = "/candles.mp4",
     posterSrc = "",
-    primaryButtonText = "Markets",
+    primaryButtonText = "Start Trading",
     primaryButtonHref = "/markets",
-    secondaryButtonText = "Portfolio",
-    secondaryButtonHref = "/portfolio",
+    secondaryButtonText = "Watch Demo",
+    secondaryButtonHref = "#demo",
   } = props
 
   // @return
   return (
-    <section className="w-full px-8 pt-32 pb-32 bg-black">
+    <section className="w-full px-8 pt-24 pb-32 bg-black min-h-[90vh] flex items-center">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-12 gap-8 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          {/* Left Content */}
           <motion.div
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
-              duration: 0.8,
+              duration: 0.6,
               ease: [0.645, 0.045, 0.355, 1],
             }}
-            className="col-span-12 lg:col-span-6 flex"
+            className="flex flex-col"
           >
-            <div className="flex flex-col justify-center w-full">
+            {/* Beta Badge */}
             <motion.div
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: [0.645, 0.045, 0.355, 1], delay: 0.5 }}
-              className="flex flex-col gap-1 text-muted-foreground mb-8"
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="inline-flex items-center gap-2 mb-8 w-fit"
             >
-              <span
-                className="text-sm uppercase tracking-tight font-mono flex items-center gap-1"
-                style={{
-                  fontFamily: "var(--font-geist-mono), 'Geist Mono', ui-monospace, monospace",
-                }}
-              >
-                {dailyVolumeLabel}
-                <ArrowUpRight className="w-[0.71em] h-[0.71em]" />
-              </span>
+              <div className="flex items-center gap-2 bg-[hsl(174,62%,56%)]/20 px-3 py-1.5 rounded-full border border-[hsl(174,62%,56%)]/30">
+                <div className="w-2 h-2 rounded-full bg-[hsl(174,62%,56%)] animate-pulse" />
+                <span className="text-xs font-medium text-[hsl(174,62%,56%)]">
+                  Now in Public Beta
+                </span>
+              </div>
             </motion.div>
 
+            {/* Headline */}
             <h1
-              className="text-[56px] leading-[60px] tracking-tight text-foreground max-w-[520px] mb-6"
+              className="text-5xl lg:text-6xl font-bold tracking-tight text-white mb-6 leading-tight"
               style={{
-                fontWeight: "500",
-                fontFamily: "var(--font-figtree), Figtree",
+                fontFamily: "var(--font-sans), Space Grotesk, sans-serif",
               }}
             >
-              {headline}
+              Build your crypto{" "}
+              <span className="text-[hsl(174,62%,56%)]">
+                trading platform
+              </span>{" "}
+              with confidence
             </h1>
 
+            {/* Subtitle */}
             <p
-              className="text-lg leading-7 text-muted-foreground max-w-[520px] mb-6"
+              className="text-lg text-zinc-400 mb-8 max-w-[540px] leading-relaxed"
               style={{
-                fontFamily: "var(--font-figtree), Figtree",
+                fontFamily: "var(--font-sans), Space Grotesk, sans-serif",
               }}
             >
               {subheadline}
             </p>
 
-            <div className="max-w-[520px] mb-0">
-              <p
-                className="text-base leading-5"
+            {/* Buttons */}
+            <div className="flex flex-wrap gap-4 mb-10">
+              <Link
+                href={primaryButtonHref}
+                className="inline-flex items-center gap-2 bg-white text-black px-6 py-3.5 rounded-xl font-semibold text-base hover:bg-zinc-100 transition-all duration-200 shadow-lg hover:shadow-xl"
                 style={{
-                  display: "none",
+                  fontFamily: "var(--font-sans), Space Grotesk, sans-serif",
                 }}
               >
-                {description}
-              </p>
+                {primaryButtonText}
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+              <button
+                className="inline-flex items-center gap-2 bg-transparent border-2 border-white text-white px-6 py-3.5 rounded-xl font-semibold text-base hover:bg-white/5 transition-all duration-200"
+                style={{
+                  fontFamily: "var(--font-sans), Space Grotesk, sans-serif",
+                }}
+              >
+                <Play className="w-4 h-4" />
+                {secondaryButtonText}
+              </button>
             </div>
 
-            <ul className="flex gap-1.5 flex-wrap mt-10">
-              <li>
-                <Link
-                  href={primaryButtonHref}
-                  className="block cursor-pointer text-background bg-[#FFD700] rounded-full px-[18px] py-[15px] text-base leading-4 whitespace-nowrap transition-all duration-150 ease-[cubic-bezier(0.455,0.03,0.515,0.955)] hover:rounded-2xl hover:bg-[#FFED4E]"
-                  style={{
-                    fontWeight: "500",
-                  }}
-                >
-                  {primaryButtonText}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href={secondaryButtonHref}
-                  className="block cursor-pointer text-foreground border border-foreground rounded-full px-[18px] py-[15px] text-base leading-4 whitespace-nowrap transition-all duration-150 ease-[cubic-bezier(0.455,0.03,0.515,0.955)] hover:rounded-2xl"
-                >
-                  {secondaryButtonText}
-                </Link>
-              </li>
-            </ul>
+            {/* Teams Building */}
+            <div className="flex items-center gap-3">
+              <div className="flex -space-x-2">
+                {[1, 2, 3, 4].map((i) => (
+                  <div
+                    key={i}
+                    className="w-8 h-8 rounded-full bg-gradient-to-br from-[hsl(174,62%,56%)] to-[hsl(174,62%,40%)] border-2 border-black flex items-center justify-center text-xs font-bold text-white"
+                  >
+                    {i}
+                  </div>
+                ))}
+              </div>
+              <span className="text-sm text-zinc-400 font-medium">
+                2,400+ teams building
+              </span>
             </div>
           </motion.div>
 
+          {/* Right Side - Illustration & Stats */}
           <motion.div
-            initial={{ opacity: 0, y: 12, scale: 0.97 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
             transition={{
               duration: 0.7,
               ease: [0.21, 0.8, 0.35, 1],
-              delay: 0.15,
+              delay: 0.2,
             }}
-            className="col-span-12 lg:col-span-6 flex relative"
+            className="relative flex items-center justify-center"
           >
-            <div className="relative w-full aspect-[16/11]">
-              {/* Video with edge fades to blend into black background */}
-              <video
-                src={videoSrc}
-                autoPlay
-                muted
-                loop
-                playsInline
-                poster={posterSrc || undefined}
-                className="h-full w-full object-cover"
-                style={{
-                  maskImage: 'radial-gradient(ellipse 90% 90% at 50% 50%, black 50%, transparent 90%)',
-                  WebkitMaskImage: 'radial-gradient(ellipse 90% 90% at 50% 50%, black 50%, transparent 90%)',
-                }}
-              />
+            <div className="relative w-full max-w-[600px]">
+              {/* Processing Stats - Top Left */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                className="absolute top-0 left-0 z-10"
+              >
+                <div className="bg-zinc-900/80 backdrop-blur-xl rounded-2xl p-4 shadow-xl border border-white/10">
+                  <div className="text-xs text-zinc-400 uppercase tracking-wider mb-1 font-semibold">
+                    {dailyVolumeLabel}
+                  </div>
+                  <div className="text-3xl font-bold text-[hsl(174,62%,56%)]">
+                    {dailyVolume}
+                  </div>
+                  <div className="text-xs text-zinc-400 mt-1">
+                    events/sec
+                  </div>
+                </div>
+              </motion.div>
 
-              {/* Label */}
-              <div className="absolute left-4 bottom-4 flex items-center gap-2 text-xs text-zinc-200/80 z-10">
-                <span className="inline-flex items-center px-2 py-1 rounded-full bg-emerald-500/20 text-emerald-200 border border-emerald-400/30 backdrop-blur-md">
-                  Live candles preview
-                </span>
-                <span className="hidden sm:inline text-zinc-400">
-                  Zoom, pan and trade directly in the app
-                </span>
-              </div>
+              {/* Uptime Stats - Bottom Right */}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.5 }}
+                className="absolute bottom-0 right-0 z-10"
+              >
+                <div className="bg-zinc-900/80 backdrop-blur-xl rounded-2xl p-4 shadow-xl border border-white/10">
+                  <div className="text-xs text-zinc-400 uppercase tracking-wider mb-1 font-semibold">
+                    UPTIME
+                  </div>
+                  <div className="text-3xl font-bold text-[hsl(355,70%,68%)]">
+                    99.99%
+                  </div>
+                  <div className="text-xs text-zinc-400 mt-1">
+                    guaranteed
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Trading Terminal Illustration */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="relative flex items-center justify-center py-16"
+              >
+                <div className="relative w-full h-[400px] flex items-center justify-center">
+                  {/* Main Trading Platform */}
+                  <div 
+                    className="absolute w-[500px] h-[320px] rounded-2xl overflow-hidden"
+                    style={{
+                      background: "linear-gradient(145deg, hsl(220,26%,16%), hsl(220,26%,12%))",
+                      transform: "perspective(1000px) rotateX(8deg) rotateY(-5deg)",
+                      boxShadow: "0 40px 80px -20px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255,255,255,0.05)",
+                    }}
+                  >
+                    {/* Trading Chart Area */}
+                    <div className="absolute inset-0 p-4">
+                      {/* Chart Header */}
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="w-6 h-6 rounded-full bg-[hsl(174,62%,56%)]" />
+                        <span className="text-sm font-semibold text-white">BTC/USDT</span>
+                        <span className="text-xs text-[hsl(174,62%,56%)] ml-auto">+2.4%</span>
+                      </div>
+
+                      {/* Candlestick Chart Simulation */}
+                      <div className="relative h-40 flex items-end justify-between gap-1 px-2">
+                        {[60, 75, 55, 80, 70, 85, 65, 90, 75, 95, 80, 100, 85, 92, 88, 94].map((height, i) => (
+                          <motion.div
+                            key={i}
+                            initial={{ scaleY: 0 }}
+                            animate={{ scaleY: 1 }}
+                            transition={{ duration: 0.5, delay: 0.4 + i * 0.05 }}
+                            className="relative flex-1 origin-bottom"
+                            style={{ height: `${height}%` }}
+                          >
+                            <div
+                              className={`w-full rounded-t ${i % 3 === 0 ? 'bg-green-500/80' : 'bg-[hsl(174,62%,56%)]/60'}`}
+                              style={{ height: '100%' }}
+                            />
+                          </motion.div>
+                        ))}
+                        
+                        {/* Grid lines */}
+                        {[0, 1, 2, 3].map((i) => (
+                          <div
+                            key={i}
+                            className="absolute left-0 right-0 border-t border-white/5"
+                            style={{ top: `${i * 25}%` }}
+                          />
+                        ))}
+                      </div>
+
+                      {/* Order Panel */}
+                      <div className="mt-4 grid grid-cols-2 gap-2">
+                        <div className="bg-zinc-900/50 rounded-lg p-3 border border-white/5">
+                          <div className="text-xs text-zinc-400 mb-1">Long</div>
+                          <div className="text-sm font-bold text-green-400">$64,538</div>
+                        </div>
+                        <div className="bg-zinc-900/50 rounded-lg p-3 border border-white/5">
+                          <div className="text-xs text-zinc-400 mb-1">Short</div>
+                          <div className="text-sm font-bold text-red-400">$64,425</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Floating Mobile Device */}
+                  <motion.div
+                    animate={{ y: [0, -8, 0], x: [0, 3, 0] }}
+                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute left-[5%] top-[15%] w-24 h-36 bg-zinc-900 rounded-2xl shadow-2xl border border-white/10 overflow-hidden"
+                    style={{
+                      transform: "perspective(600px) rotateY(-15deg) rotateX(5deg)",
+                    }}
+                  >
+                    <div className="h-full flex flex-col p-3 gap-2">
+                      <div className="flex items-center gap-2">
+                        <div className="w-5 h-5 rounded-full bg-[hsl(174,62%,56%)]" />
+                        <div className="flex-1 h-2 bg-zinc-800 rounded" />
+                      </div>
+                      <div className="flex-1 bg-zinc-800/50 rounded-lg" />
+                      <div className="grid grid-cols-2 gap-1">
+                        <div className="h-8 bg-green-500/20 rounded border border-green-500/30" />
+                        <div className="h-8 bg-red-500/20 rounded border border-red-500/30" />
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              </motion.div>
             </div>
           </motion.div>
         </div>
 
-        {/* Scrolling stock ticker */}
+        {/* Animated Crypto Ticker */}
         <motion.div
-          initial={{ opacity: 0, y: 12 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-20 overflow-hidden border-y border-border/30"
+          transition={{ duration: 0.6, delay: 0.6 }}
+          className="mt-24 overflow-hidden py-6 border-t border-b border-white/10"
         >
-          <div className="relative py-6">
+          <div className="relative">
             {/* Gradient fades */}
-            <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-            <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+            <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
             
-            {/* Ticker tape */}
-            <div className="flex gap-12 animate-scroll-left whitespace-nowrap">
-              {/* Duplicate the stocks array for seamless loop */}
-              {[...STOCK_TICKERS, ...STOCK_TICKERS].map((stock, i) => (
+            {/* Ticker tape - duplicate for seamless loop */}
+            <div className="flex gap-8 animate-scroll-left whitespace-nowrap">
+              {[...CRYPTO_TICKERS, ...CRYPTO_TICKERS].map((crypto, i) => (
                 <div
-                  key={`${stock.ticker}-${i}`}
+                  key={`${crypto.ticker}-${i}`}
                   className="flex items-center gap-3 flex-shrink-0"
                 >
-                  <img
-                    src={`https://img.logokit.com/ticker/${stock.ticker}?token=pk_frfbe2dd55bc04b3d4d1bc`}
-                    alt={stock.ticker}
-                    className="w-8 h-8 rounded-full object-cover"
-                    onError={(e) => {
-                      e.currentTarget.style.display = "none"
-                    }}
-                  />
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-sm font-semibold text-foreground">{stock.ticker}</span>
-                    <span className="text-xs text-muted-foreground">{stock.name}</span>
+                  <div className="relative w-10 h-10 rounded-full overflow-hidden flex-shrink-0 bg-zinc-900 border border-white/10">
+                    <img
+                      src={`https://img.logo.dev/crypto/${crypto.ticker.toLowerCase()}?token=pk_CDZ01_qUTsOMosnUm6lEvA`}
+                      alt={crypto.ticker}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        e.currentTarget.style.display = "none"
+                      }}
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-sm font-semibold text-white">{crypto.ticker}</span>
+                    <span className="text-xs text-zinc-400">{crypto.name}</span>
                   </div>
                 </div>
               ))}
@@ -200,20 +318,28 @@ export const ProductTeaserCard = (props: ProductTeaserCardProps) => {
   )
 }
 
-const STOCK_TICKERS = [
-  { ticker: "AAPL", name: "Apple" },
-  { ticker: "AMZN", name: "Amazon" },
-  { ticker: "GOOG", name: "Alphabet" },
-  { ticker: "MSFT", name: "Microsoft" },
-  { ticker: "TSLA", name: "Tesla" },
-  { ticker: "NVDA", name: "NVIDIA" },
-  { ticker: "PFE", name: "Pfizer" },
-  { ticker: "INTC", name: "Intel" },
-  { ticker: "SOFI", name: "SoFi" },
-  { ticker: "OPEN", name: "Opendoor" },
-  { ticker: "ONDS", name: "Ondas" },
-  { ticker: "META", name: "Meta" },
-  { ticker: "NFLX", name: "Netflix" },
-  { ticker: "AMD", name: "AMD" },
-  { ticker: "JPM", name: "JPMorgan" },
+const CRYPTO_TICKERS = [
+  { ticker: "BTC", name: "Bitcoin" },
+  { ticker: "ETH", name: "Ethereum" },
+  { ticker: "SOL", name: "Solana" },
+  { ticker: "LINK", name: "Chainlink" },
+  { ticker: "SUI", name: "Sui" },
+  { ticker: "DOGE", name: "Dogecoin" },
+  { ticker: "XRP", name: "XRP" },
+  { ticker: "AVAX", name: "Avalanche" },
+  { ticker: "ATOM", name: "Cosmos" },
+  { ticker: "ADA", name: "Cardano" },
+  { ticker: "DOT", name: "Polkadot" },
+  { ticker: "LTC", name: "Litecoin" },
+  { ticker: "ARB", name: "Arbitrum" },
+  { ticker: "OP", name: "Optimism" },
+  { ticker: "PEPE", name: "Pepe" },
+  { ticker: "WIF", name: "dogwifhat" },
+  { ticker: "BONK", name: "Bonk" },
+  { ticker: "SEI", name: "Sei" },
+  { ticker: "APT", name: "Aptos" },
+  { ticker: "FIL", name: "Filecoin" },
+  { ticker: "NEAR", name: "NEAR Protocol" },
+  { ticker: "INJ", name: "Injective" },
+  { ticker: "TIA", name: "Celestia" },
 ]

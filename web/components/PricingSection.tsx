@@ -69,12 +69,12 @@ export function PricingSection() {
   const [selectedPlan, setSelectedPlan] = React.useState<PlanLevel>("pro")
 
   return (
-    <section className="py-24 bg-background">
+    <section className="py-24 bg-black border-t border-white/10">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="font-figtree text-[40px] font-normal leading-tight mb-4 text-foreground">Choose Your Plan</h2>
-          <p className="font-figtree text-lg text-muted-foreground max-w-2xl mx-auto">
+          <h2 className="text-[40px] font-semibold leading-tight mb-4 text-white" style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}>Choose Your Plan</h2>
+          <p className="text-lg text-zinc-400 max-w-2xl mx-auto" style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}>
             Get started with Auralink's communication intelligence platform. All plans include API access and team
             collaboration.
           </p>
@@ -82,14 +82,15 @@ export function PricingSection() {
 
         {/* Billing Toggle */}
         <div className="flex justify-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-secondary rounded-full p-1">
+          <div className="inline-flex items-center gap-2 bg-zinc-900 border border-white/10 rounded-full p-1">
             <button
               type="button"
               onClick={() => setIsYearly(false)}
               className={cn(
-                "px-6 py-2 rounded-full font-figtree text-lg transition-all",
-                !isYearly ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground",
+                "px-6 py-2 rounded-full text-lg transition-all",
+                !isYearly ? "bg-zinc-800 text-white shadow-sm" : "text-zinc-400 hover:text-white",
               )}
+              style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}
             >
               Monthly
             </button>
@@ -97,12 +98,13 @@ export function PricingSection() {
               type="button"
               onClick={() => setIsYearly(true)}
               className={cn(
-                "px-6 py-2 rounded-full font-figtree text-lg transition-all",
-                isYearly ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground",
+                "px-6 py-2 rounded-full text-lg transition-all",
+                isYearly ? "bg-zinc-800 text-white shadow-sm" : "text-zinc-400 hover:text-white",
               )}
+              style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}
             >
               Yearly
-              <span className="ml-2 text-sm text-[#156d95]">Save 17%</span>
+              <span className="ml-2 text-sm text-[hsl(174,62%,56%)]">Save 17%</span>
             </button>
           </div>
         </div>
@@ -117,29 +119,30 @@ export function PricingSection() {
               className={cn(
                 "relative p-8 rounded-2xl text-left transition-all border-2",
                 selectedPlan === plan.level
-                  ? "border-[#156d95] bg-[#156d95]/5"
-                  : "border-border hover:border-[#156d95]/50",
+                  ? "border-[hsl(174,62%,56%)] bg-[hsl(174,62%,56%)]/10"
+                  : "border-white/10 hover:border-[hsl(174,62%,56%)]/50",
               )}
             >
               {plan.popular && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#156d95] text-white px-4 py-1 rounded-full text-sm font-figtree">
+                <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[hsl(174,62%,56%)] text-black px-4 py-1 rounded-full text-sm font-semibold" style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}>
                   Most Popular
                 </span>
               )}
               <div className="mb-6">
-                <h3 className="font-figtree text-2xl font-medium mb-2 text-foreground">{plan.name}</h3>
+                <h3 className="text-2xl font-semibold mb-2 text-white" style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}>{plan.name}</h3>
                 <div className="flex items-baseline gap-1">
-                  <span className="font-figtree text-4xl font-medium text-foreground">
+                  <span className="text-4xl font-semibold text-white" style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}>
                     ${isYearly ? plan.price.yearly : plan.price.monthly}
                   </span>
-                  <span className="font-figtree text-lg text-muted-foreground">/{isYearly ? "year" : "month"}</span>
+                  <span className="text-lg text-zinc-400" style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}>/{isYearly ? "year" : "month"}</span>
                 </div>
               </div>
               <div
                 className={cn(
-                  "w-full py-3 px-6 rounded-full font-figtree text-lg transition-all text-center",
-                  selectedPlan === plan.level ? "bg-[#156d95] text-white" : "bg-secondary text-foreground",
+                  "w-full py-3 px-6 rounded-full text-lg transition-all text-center font-semibold",
+                  selectedPlan === plan.level ? "bg-[hsl(174,62%,56%)] text-black" : "bg-zinc-800 text-white",
                 )}
+                style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}
               >
                 {selectedPlan === plan.level ? "Selected" : "Select Plan"}
               </div>
@@ -148,17 +151,17 @@ export function PricingSection() {
         </div>
 
         {/* Features Table */}
-        <div className="border border-border rounded-2xl overflow-hidden bg-card">
+        <div className="border border-white/10 rounded-2xl overflow-hidden bg-zinc-900/50">
           <div className="overflow-x-auto">
             <div className="min-w-[768px]">
               {/* Table Header */}
-              <div className="flex items-center p-6 bg-secondary border-b border-border">
+              <div className="flex items-center p-6 bg-zinc-900 border-b border-white/10">
                 <div className="flex-1">
-                  <h3 className="font-figtree text-xl font-medium text-foreground">Features</h3>
+                  <h3 className="text-xl font-semibold text-white" style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}>Features</h3>
                 </div>
                 <div className="flex items-center gap-8">
                   {plans.map((plan) => (
-                    <div key={plan.level} className="w-24 text-center font-figtree text-lg font-medium text-foreground">
+                    <div key={plan.level} className="w-24 text-center text-lg font-semibold text-white" style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}>
                       {plan.name}
                     </div>
                   ))}
@@ -171,12 +174,12 @@ export function PricingSection() {
                   key={feature.name}
                   className={cn(
                     "flex items-center p-6 transition-colors",
-                    index % 2 === 0 ? "bg-background" : "bg-secondary/30",
-                    feature.included === selectedPlan && "bg-[#156d95]/5",
+                    index % 2 === 0 ? "bg-transparent" : "bg-zinc-900/30",
+                    feature.included === selectedPlan && "bg-[hsl(174,62%,56%)]/5",
                   )}
                 >
                   <div className="flex-1">
-                    <span className="font-figtree text-lg text-foreground">{feature.name}</span>
+                    <span className="text-lg text-white" style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}>{feature.name}</span>
                   </div>
                   <div className="flex items-center gap-8">
                     {plans.map((plan) => (

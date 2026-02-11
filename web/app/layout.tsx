@@ -1,31 +1,26 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Figtree, Inter, Geist_Mono } from "next/font/google"
+import { Space_Grotesk, JetBrains_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import Provider from "./Provider"
 import "./globals.css"
 
-const figtree = Figtree({
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
-  variable: "--font-figtree",
-  weight: ["400", "500", "600"],
+  variable: "--font-sans",
+  weight: ["400", "500", "600", "700"],
 })
 
-const inter = Inter({
+const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-  variable: "--font-inter",
-})
-
-const geistMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-geist-mono",
-  weight: ["400", "500", "600"],
+  variable: "--font-mono",
+  weight: ["400", "500", "600", "700"],
 })
 
 export const metadata: Metadata = {
-  title: "Median",
-  description: "Median - Tokenized assets and markets",
-  generator: "Median",
+  title: "PumpStop",
+  description: "PumpStop - Build your crypto trading platform with confidence",
+  generator: "PumpStop",
   icons: {
     icon: "/icon.svg",
   },
@@ -38,7 +33,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${figtree.variable} ${geistMono.variable} font-sans antialiased`}>
+      <body className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} font-sans antialiased`}>
         <Provider>
           {children}
         </Provider>

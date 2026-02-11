@@ -39,8 +39,8 @@ export const PortfolioNavbar = () => {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-background/90 backdrop-blur-xl border-b border-border/60"
-          : "bg-background/70 backdrop-blur-xl"
+          ? "bg-black/90 backdrop-blur-xl border-b border-white/10"
+          : "bg-black/70 backdrop-blur-xl"
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -48,52 +48,42 @@ export const PortfolioNavbar = () => {
           {/* Logo */}
           <Link
             href="/"
-            className="text-2xl font-bold text-foreground hover:text-primary transition-colors duration-200 flex items-center gap-2"
-            style={{ fontFamily: "Plus Jakarta Sans, sans-serif" }}
+            className="text-2xl font-bold text-foreground hover:text-[hsl(174,62%,56%)] transition-colors duration-200 flex items-center gap-2"
+            style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}
           >
             <span
               style={{
-                fontFamily: "Figtree",
+                fontFamily: "var(--font-sans), Space Grotesk, sans-serif",
                 fontWeight: 800,
-                color: "#FFD700",
                 letterSpacing: "-0.02em",
               }}
             >
-              Median
+              PumpStop
             </span>
           </Link>
 
           {/* Center nav links */}
           <div className="hidden md:flex absolute left-1/2 -translate-x-1/2">
-            <div 
-              className="flex items-center gap-8 rounded-full px-8 py-3 backdrop-blur-2xl shadow-lg"
-              style={{
-                background: "linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%)",
-                border: "1px solid rgba(255,255,255,0.12)",
-                boxShadow: "0 8px 32px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.1)",
-              }}
-            >
+            <div className="flex items-center gap-1">
               {NAV_LINKS.map((link) =>
                 link.href.startsWith("/") ? (
                   <Link
                     key={link.name}
                     href={link.href}
-                    className="text-[15px] font-semibold text-zinc-300 hover:text-white transition-all duration-200 relative group whitespace-nowrap"
-                    style={{ fontFamily: "Figtree, sans-serif", letterSpacing: "0.01em" }}
+                    className="text-[15px] font-medium text-zinc-300 hover:text-white transition-all duration-200 px-4 py-2 rounded-lg hover:bg-white/5"
+                    style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}
                   >
-                    <span>{link.name}</span>
-                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary rounded-full transition-all duration-300 group-hover:w-full" />
+                    {link.name}
                   </Link>
                 ) : (
                   <button
                     key={link.name}
                     type="button"
                     onClick={() => handleAnchorClick(link.href)}
-                    className="text-[15px] font-semibold text-zinc-300 hover:text-white transition-all duration-200 relative group whitespace-nowrap"
-                    style={{ fontFamily: "Figtree, sans-serif", letterSpacing: "0.01em" }}
+                    className="text-[15px] font-medium text-zinc-300 hover:text-white transition-all duration-200 px-4 py-2 rounded-lg hover:bg-white/5"
+                    style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}
                   >
-                    <span>{link.name}</span>
-                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary rounded-full transition-all duration-300 group-hover:w-full" />
+                    {link.name}
                   </button>
                 )
               )}
@@ -102,20 +92,18 @@ export const PortfolioNavbar = () => {
 
           {/* Right controls: wallet */}
           <div className="hidden md:flex items-center gap-3">
-            <div
-              className="rounded-full px-3 py-1.5 backdrop-blur-2xl"
-              style={{
-                background: "linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%)",
-                border: "1px solid rgba(255,255,255,0.12)",
-                boxShadow: "0 4px 16px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.1)",
-              }}
+            <Link
+              href="/portfolio"
+              className="text-sm font-semibold text-zinc-300 hover:text-[hsl(174,62%,56%)] transition-colors px-4 py-2"
+              style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}
             >
-              <div
-                className="[&_button]:!px-5 [&_button]:!py-2 [&_button]:!rounded-full [&_button]:!text-[15px] [&_button]:!font-semibold [&_button]:!bg-transparent [&_button]:!border-none [&_button]:!text-zinc-300 [&_button]:hover:!text-white [&_button]:!transition-colors"
-                style={{ fontFamily: "Figtree, sans-serif" }}
-              >
-                <RainbowConnectButton />
-              </div>
+              Sign In
+            </Link>
+            <div
+              className="rounded-xl px-4 py-2"
+              style={{ fontFamily: "var(--font-sans), Space Grotesk, sans-serif" }}
+            >
+              <RainbowConnectButton />
             </div>
           </div>
 
