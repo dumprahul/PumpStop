@@ -1,0 +1,142 @@
+# Crypto synthetic tokens deployed across multiple testnets.
+# Deployer: 0xE08224B2CfaF4f27E2DC7cB3f6B99AcC68Cf06c0
+# Initial supply: 1,000,000 per token (18 decimals)
+
+synthetic_tokens:
+  - symbol: BTC
+    name: Bitcoin
+    address: "0x375e19891647cFD445116df4C668A45AB8541DAC"
+    chain_id: 11155111
+    decimals: 18
+
+  - symbol: ETH
+    name: Ethereum
+    address: "0x131b2284D260f0BD9bEA73272A1dCC6d4061c35F"
+    chain_id: 11155111
+    decimals: 18
+
+  - symbol: SOL
+    name: Solana
+    address: "0x5A2bF33Bbaea42EbFAc1467c31A12bc8Cc595Ec3"
+    chain_id: 11155111
+    decimals: 18
+
+  - symbol: LINK
+    name: Chainlink
+    address: "0x1293b56407F0c080c4d5D68728dE75EE4786D2dE"
+    chain_id: 11155111
+    decimals: 18
+
+  - symbol: SUI
+    name: Sui
+    address: "0xEcEd940Bb41b9CBa442AE536F3498d81f8585D10"
+    chain_id: 11155111
+    decimals: 18
+
+  - symbol: DOGE
+    name: Dogecoin
+    address: "0x9749a1a841bC966E640DA6c7F10deC23C0F65B51"
+    chain_id: 11155111
+    decimals: 18
+
+  - symbol: XRP
+    name: XRP
+    address: "0x783Fed2B525329047BAc5AC689f72E1B299C78E0"
+    chain_id: 84532
+    decimals: 18
+
+  - symbol: AVAX
+    name: Avalanche
+    address: "0x486aeF528736F932E4C3538C8D208C0d12336D17"
+    chain_id: 84532
+    decimals: 18
+
+  - symbol: ATOM
+    name: Cosmos
+    address: "0x8C2AB5976C68710D96190E7016eF13e25A8EE418"
+    chain_id: 84532
+    decimals: 18
+
+  - symbol: ADA
+    name: Cardano
+    address: "0x1E61Fa5969F47F7e8622053Ad45baC9E0D0E5532"
+    chain_id: 84532
+    decimals: 18
+
+  - symbol: DOT
+    name: Polkadot
+    address: "0xBA24952E81861A7c8969f8436De538c8E1724d1A"
+    chain_id: 84532
+    decimals: 18
+
+  - symbol: LTC
+    name: Litecoin
+    address: "0x259f44E3E4AadD3aBc1cb996CE6D99FE85f2807e"
+    chain_id: 84532
+    decimals: 18
+
+  - symbol: ARB
+    name: Arbitrum
+    address: "0x1dD40d5c0eF4797ee4e4755952611EAEe7652e4e"
+    chain_id: 421614
+    decimals: 18
+
+  - symbol: OP
+    name: Optimism
+    address: "0x8cC46F74430Fc25Fa2E59EBdf66674C62dBeeD12"
+    chain_id: 421614
+    decimals: 18
+
+  - symbol: PEPE
+    name: Pepe
+    address: "0x2a7A9527EFF98795ABbcD6aD81482A241F592486"
+    chain_id: 421614
+    decimals: 18
+
+  - symbol: WIF
+    name: dogwifhat
+    address: "0xC7fc213c3e06Bf87238e5fD0d7C68F7e5BB8A217"
+    chain_id: 421614
+    decimals: 18
+
+  - symbol: BONK
+    name: Bonk
+    address: "0x2e4320C016ee6EaDD4f17ECFBd1A478Cf061Fdbf"
+    chain_id: 421614
+    decimals: 18
+
+  - symbol: SEI
+    name: Sei
+    address: "0xA10fC2Fe1205aA26c16B7b92d6Ea119bac738D22"
+    chain_id: 421614
+    decimals: 18
+
+  - symbol: APT
+    name: Aptos
+    address: "0x3C8357cD56D275201971e70B8161eBe8A4729c41"
+    chain_id: 11155420
+    decimals: 18
+
+  - symbol: FIL
+    name: Filecoin
+    address: "0xA7473C3a626fa7bBBB279F3392fA36810E3324f6"
+    chain_id: 11155420
+    decimals: 18
+
+  - symbol: NEAR
+    name: NEAR Protocol
+    address: "0xd092CE3D848eE91af4B7E3c28e0764cB16d68888"
+    chain_id: 11155420
+    decimals: 18
+
+  - symbol: INJ
+    name: Injective
+    address: "0x0Fd4E833B8Fe46e2000510E95514511ddD0DB1EB"
+    chain_id: 11155420
+    decimals: 18
+
+  - symbol: TIA
+    name: Celestia
+    address: "0xc7B7F951439e7CEc48fC9B428Cf487D9bE75C33F"
+    chain_id: 11155420
+    decimals: 18
