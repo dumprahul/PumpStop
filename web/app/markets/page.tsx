@@ -6,6 +6,7 @@ import { MarketTickerBar } from "@/components/markets/MarketTickerBar"
 import { AssetColumns } from "@/components/markets/AssetColumns"
 import { ProductGrid } from "@/components/markets/ProductGrid"
 import { useBybitTickers } from "@/hooks/useBybitTickers"
+import { useStockQuotes } from "@/hooks/useStockQuotes"
 import type { AssetWithQuote } from "@/hooks/useStockQuotes"
 
 // Crypto names mapping
@@ -84,29 +85,36 @@ function generateSparklineData(currentPrice: number, changePct: number, points: 
 }
 
 export default function MarketsPage() {
-  const { tickersList, loading, error } = useBybitTickers()
+  const { tickersList, loading: cryptoLoading, error: cryptoError } = useBybitTickers()
 
   // Convert Bybit ticker data to AssetWithQuote format
-  const assets: AssetWithQuote[] = useMemo(() => {
-    return tickersList.map((ticker, index) => ({
-      id: ticker.ticker,
-      ticker: ticker.ticker,
-      name: CRYPTO_NAMES[ticker.ticker] || ticker.ticker,
-      price: ticker.price,
-      change24h: ticker.change24h,
-      change24hPercent: ticker.changePct24h,
-      categories: CRYPTO_CATEGORIES[ticker.ticker] || [],
-      isLive: true,
-      marketCap: `Vol $${(ticker.turnover24h / 1e9).toFixed(2)}B`,
-      addedDate: index < 3 ? "New" : undefined, // Mark first 3 as new
-      sparklineData: generateSparklineData(ticker.price, ticker.changePct24h),
-      high24h: ticker.high24h,
-      low24h: ticker.low24h,
-    }))
+  const cryptoAssets: AssetWithQuote[] = useMemo(() => {
+    // Ensure we mark some cryptos as "newly added" for the Newly Added section
+    const sortedByTime = [...tickersList].sort((a, b) => b.lastUpdated - a.lastUpdated)
+    
+    return tickersList.map((ticker) => {
+      const isNew = sortedByTime.slice(0, 5).some(t => t.ticker === ticker.ticker)
+      
+      return {
+        id: ticker.ticker,
+        ticker: ticker.ticker,
+        name: CRYPTO_NAMES[ticker.ticker] || ticker.ticker,
+        price: ticker.price,
+        change24h: ticker.change24h,
+        change24hPercent: ticker.changePct24h,
+        categories: CRYPTO_CATEGORIES[ticker.ticker] || [],
+        isLive: true,
+        marketCap: `Vol $${(ticker.turnover24h / 1e9).toFixed(2)}B`,
+        addedDate: isNew ? "New" : undefined,
+        sparklineData: generateSparklineData(ticker.price, ticker.changePct24h),
+        high24h: ticker.high24h,
+        low24h: ticker.low24h,
+      }
+    })
   }, [tickersList])
 
   const refetch = () => {
-    // Bybit tickers auto-refresh via WebSocket, so we don't need manual refetch
+    // Refresh the page to reload all data
     window.location.reload()
   }
 
@@ -116,8 +124,8 @@ export default function MarketsPage() {
       <main className="pt-24 pb-16">
         <MarketTickerBar />
         <div className="px-4 sm:px-6 lg:px-8 mt-8">
-          <AssetColumns assets={assets} loading={loading} />
-          <ProductGrid assets={assets} loading={loading} error={error} onRefetch={refetch} />
+          <AssetColumns assets={cryptoAssets} loading={cryptoLoading} />
+          <ProductGrid assets={cryptoAssets} loading={cryptoLoading} error={cryptoError} onRefetch={refetch} />
         </div>
       </main>
     </div>

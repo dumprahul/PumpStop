@@ -4,7 +4,18 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 import { TrendingUp, TrendingDown, Radio } from "lucide-react"
 import type { AssetWithQuote } from "@/hooks/useStockQuotes"
-import { cn, getCryptoLogoUrl } from "@/lib/utils"
+import { cn, getCryptoLogoUrl, getStockLogoUrl } from "@/lib/utils"
+
+// Common crypto tickers
+const CRYPTO_TICKERS = new Set([
+  "BTC", "ETH", "SOL", "LINK", "SUI", "DOGE", "XRP",
+  "AVAX", "ATOM", "ADA", "DOT", "LTC", "ARB", "OP",
+  "PEPE", "WIF", "BONK", "SEI", "APT", "FIL", "NEAR", "INJ", "TIA"
+])
+
+function isCrypto(ticker: string): boolean {
+  return CRYPTO_TICKERS.has(ticker.toUpperCase())
+}
 
 function ColumnItem({
   asset,
@@ -14,6 +25,7 @@ function ColumnItem({
   type: "gainers" | "trending" | "newlyAdded"
 }) {
   const positive = asset.change24h >= 0
+  const isAssetCrypto = isCrypto(asset.ticker)
 
   return (
     <Link href={`/markets/assets/${asset.ticker}`}>
@@ -24,9 +36,9 @@ function ColumnItem({
     >
       <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 bg-muted overflow-hidden">
         <img
-          src={getCryptoLogoUrl(asset.ticker)}
+          src={isAssetCrypto ? getCryptoLogoUrl(asset.ticker) : getStockLogoUrl(asset.ticker)}
           alt={asset.ticker}
-          className="w-9 h-9 object-cover rounded-full"
+          className={cn("w-9 h-9 object-cover", isAssetCrypto && "rounded-full")}
         />
       </div>
       <div className="min-w-0 flex-1">
@@ -104,9 +116,15 @@ function Column({
         <span className="text-xs text-zinc-400 font-medium">24H</span>
       </div>
       <div className="space-y-1">
-        {items.map((asset) => (
-          <ColumnItem key={asset.id} asset={asset} type={type} />
-        ))}
+        {items.length > 0 ? (
+          items.map((asset) => (
+            <ColumnItem key={asset.id} asset={asset} type={type} />
+          ))
+        ) : (
+          <div className="py-8 text-center text-sm text-muted-foreground">
+            Loading data...
+          </div>
+        )}
       </div>
     </motion.div>
   )
@@ -118,16 +136,36 @@ type AssetColumnsProps = {
 }
 
 export function AssetColumns({ assets, loading }: AssetColumnsProps) {
-  const topGainers = [...assets]
+  // Top Gainers: Show top 5 by price change (positive first, then by largest change)
+  let topGainers = [...assets]
     .filter((a) => a.change24hPercent > 0)
     .sort((a, b) => b.change24hPercent - a.change24hPercent)
     .slice(0, 5)
+  
+  // If no positive gainers, show top 5 by absolute change (best performers even if negative)
+  if (topGainers.length === 0 && assets.length > 0) {
+    topGainers = [...assets]
+      .sort((a, b) => b.change24hPercent - a.change24hPercent)
+      .slice(0, 5)
+  }
 
   const trending = assets.length >= 9
     ? [assets[0], assets[1], assets[6], assets[7], assets[8]]
     : assets.slice(0, 5)
 
-  const newlyAdded = assets.filter((a) => a.addedDate).slice(0, 5)
+  // Get newly added items, or fallback to highest volume assets if none marked as new
+  let newlyAdded = assets.filter((a) => a.addedDate).slice(0, 5)
+  if (newlyAdded.length === 0) {
+    // Fallback: show assets with highest volume/market activity
+    newlyAdded = [...assets]
+      .sort((a, b) => {
+        // Sort by volume indication (marketCap string contains volume)
+        const aVol = parseFloat(a.marketCap?.replace(/[^0-9.]/g, '') || '0')
+        const bVol = parseFloat(b.marketCap?.replace(/[^0-9.]/g, '') || '0')
+        return bVol - aVol
+      })
+      .slice(0, 5)
+  }
 
   if (loading && assets.every((a) => !a.isLive)) {
     return (
