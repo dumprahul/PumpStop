@@ -11,6 +11,8 @@ import { createAppSession } from './utils/session/create';
 import { submitAppState } from './utils/session/submitState';
 import { closeAppSession } from './utils/session/close';
 import { transfer } from './utils/session/transfer';
+import { addOrder, getOrders, removeOrder, updateOrder } from './lib/tpsl-store';
+import { priceMonitor } from './lib/price-monitor';
 
 dotenv.config();
 
@@ -238,10 +240,115 @@ app.post('/transfer', async (req: Request, res: Response) => {
   }
 });
 
+// ==================== TP/SL Order Endpoints ====================
+
+// Create a TP/SL monitor for a position
+app.post('/tpsl/orders', (req: Request, res: Response) => {
+  try {
+    const { walletAddress, ticker, side, entryPrice, takeProfitPrice, stopLossPrice, leverage, amount, positionId } = req.body;
+
+    if (!walletAddress || !ticker || !side || !positionId) {
+      res.status(400).json({ success: false, error: 'walletAddress, ticker, side, and positionId are required.' });
+      return;
+    }
+    if (!takeProfitPrice && !stopLossPrice) {
+      res.status(400).json({ success: false, error: 'At least one of takeProfitPrice or stopLossPrice is required.' });
+      return;
+    }
+
+    const order = addOrder({
+      walletAddress,
+      ticker,
+      side,
+      entryPrice: entryPrice || 0,
+      takeProfitPrice: takeProfitPrice ?? null,
+      stopLossPrice: stopLossPrice ?? null,
+      leverage: leverage || 1,
+      amount: amount || '0',
+      positionId,
+    });
+
+    // Start watching this ticker on the price monitor
+    priceMonitor.watchTicker(ticker);
+
+    res.json({ success: true, order });
+  } catch (error) {
+    console.error('Failed to create TP/SL order:', error);
+    res.status(500).json({ success: false, error: error instanceof Error ? error.message : 'Unknown error' });
+  }
+});
+
+// Get all TP/SL orders for a wallet
+app.get('/tpsl/orders', (req: Request, res: Response) => {
+  try {
+    const wallet = req.query.wallet as string;
+    if (!wallet) {
+      res.status(400).json({ success: false, error: 'wallet query parameter is required.' });
+      return;
+    }
+    const orders = getOrders(wallet);
+    res.json({ success: true, orders });
+  } catch (error) {
+    console.error('Failed to get TP/SL orders:', error);
+    res.status(500).json({ success: false, error: error instanceof Error ? error.message : 'Unknown error' });
+  }
+});
+
+// Update TP/SL prices on an existing order
+app.put('/tpsl/orders/:id', (req: Request, res: Response) => {
+  try {
+    const orderId = req.params.id;
+    const { walletAddress, takeProfitPrice, stopLossPrice } = req.body;
+    if (!walletAddress) {
+      res.status(400).json({ success: false, error: 'walletAddress is required.' });
+      return;
+    }
+    const order = updateOrder(walletAddress, orderId, { takeProfitPrice, stopLossPrice });
+    if (!order) {
+      res.status(404).json({ success: false, error: 'Order not found or not active.' });
+      return;
+    }
+    res.json({ success: true, order });
+  } catch (error) {
+    console.error('Failed to update TP/SL order:', error);
+    res.status(500).json({ success: false, error: error instanceof Error ? error.message : 'Unknown error' });
+  }
+});
+
+// Cancel/delete a TP/SL order
+app.delete('/tpsl/orders/:id', (req: Request, res: Response) => {
+  try {
+    const orderId = req.params.id;
+    const wallet = req.query.wallet as string;
+    if (!wallet) {
+      res.status(400).json({ success: false, error: 'wallet query parameter is required.' });
+      return;
+    }
+    const removed = removeOrder(wallet, orderId);
+    if (!removed) {
+      res.status(404).json({ success: false, error: 'Order not found.' });
+      return;
+    }
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Failed to delete TP/SL order:', error);
+    res.status(500).json({ success: false, error: error instanceof Error ? error.message : 'Unknown error' });
+  }
+});
+
 // Bind to 0.0.0.0 for Render deployment
 const HOST = process.env.HOST || '0.0.0.0';
 
 app.listen(PORT, HOST, () => {
   console.log(`Server is running on http://${HOST}:${PORT}`);
   console.log('WebSocket service will connect automatically...');
+
+  // Start the price monitor and register the auto-close callback
+  priceMonitor.registerTriggerCallback((order, type, price) => {
+    console.log(`🔔 [TP/SL Trigger] Auto-closing position ${order.positionId} (${type.toUpperCase()} @ $${price})`);
+    webSocketService.closePerpPositionByOrder(order, type, price).catch(err => {
+      console.error(`❌ [TP/SL Trigger] Failed to auto-close:`, err);
+    });
+  });
+  priceMonitor.start();
 });

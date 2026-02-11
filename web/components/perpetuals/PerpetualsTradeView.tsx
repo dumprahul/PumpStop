@@ -36,6 +36,25 @@ import { toast } from "sonner"
 // Counterparty address for perpetuals trading
 const COUNTERPARTY_ADDRESS = "0x4888Eb840a7Ca93F49C9be3dD95Fc0EdA25bF0c6"
 
+// Backend API URL for TP/SL endpoints
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001"
+
+// TP/SL order from backend
+interface TpSlOrder {
+  id: string
+  walletAddress: string
+  ticker: string
+  side: "long" | "short"
+  entryPrice: number
+  takeProfitPrice: number | null
+  stopLossPrice: number | null
+  leverage: number
+  amount: string
+  positionId: string
+  status: "active" | "triggered_tp" | "triggered_sl"
+  createdAt: number
+}
+
 // Position type definition
 interface Position {
   positionId: string
@@ -52,6 +71,8 @@ interface Position {
   timestamp: number
   pnl?: number
   currentPrice?: number
+  takeProfitPrice?: number | null
+  stopLossPrice?: number | null
 }
 
 const CHART_TABS = [
@@ -157,13 +178,13 @@ function getLogoUrl(ticker: string): string {
 
 function TokenLogo({ ticker, size = "md" }: { ticker: string; size?: "sm" | "md" | "lg" }) {
   const [imgError, setImgError] = useState(false)
-  
+
   const sizeClasses = {
     sm: "w-5 h-5",
     md: "w-6 h-6",
     lg: "w-8 h-8",
   }
-  
+
   const fallbackColors: Record<string, string> = {
     ETH: "from-indigo-400 to-violet-500",
     BTC: "from-amber-400 to-orange-500",
@@ -177,18 +198,18 @@ function TokenLogo({ ticker, size = "md" }: { ticker: string; size?: "sm" | "md"
     OP: "from-red-500 to-red-600",
     PEPE: "from-green-400 to-green-600",
   }
-  
+
   const textSizes = {
     sm: "text-[8px]",
     md: "text-[10px]",
     lg: "text-xs",
   }
-  
+
   // Use custom USDC logo URL
-  const logoUrl = ticker === "USDC" 
+  const logoUrl = ticker === "USDC"
     ? "https://static.vecteezy.com/system/resources/previews/044/626/814/non_2x/usdc-logo-on-transparent-background-free-vector.jpg"
     : getLogoUrl(ticker)
-  
+
   if (imgError) {
     const bg = fallbackColors[ticker] || "from-[#FFD700] to-amber-500"
     return (
@@ -204,7 +225,7 @@ function TokenLogo({ ticker, size = "md" }: { ticker: string; size?: "sm" | "md"
       </div>
     )
   }
-  
+
   return (
     <img
       src={logoUrl}
@@ -274,6 +295,7 @@ export function PerpetualsTradeView() {
   // Position state management
   const [positions, setPositions] = useState<Position[]>([])
   const [isProcessing, setIsProcessing] = useState(false)
+  const [tpslOrders, setTpslOrders] = useState<TpSlOrder[]>([])
 
   // Load positions from localStorage on mount
   useEffect(() => {
@@ -315,11 +337,13 @@ export function PerpetualsTradeView() {
         return pos
       }))
 
-      // Remove closed positions after delay and show toast
+      // Handle auto-closed positions (TP/SL triggered)
       if (data.status === "closed") {
+        const closedBy = data.closedBy
+        const label = closedBy === 'take_profit' ? '🎯 Take Profit' : closedBy === 'stop_loss' ? '🛑 Stop Loss' : '✅ Manual Close'
         setTimeout(() => {
           setPositions(prev => prev.filter(p => p.positionId !== data.positionId))
-          toast.success(`Position closed! PnL: $${data.pnl}`)
+          toast.success(`${label} — Position closed! PnL: $${data.pnl}`)
         }, 2000)
       }
     }
@@ -327,6 +351,39 @@ export function PerpetualsTradeView() {
     window.addEventListener('position_update', handlePositionUpdate as EventListener)
     return () => window.removeEventListener('position_update', handlePositionUpdate as EventListener)
   }, [])
+
+  // Poll backend for TP/SL order status updates
+  useEffect(() => {
+    if (!address || positions.length === 0) return
+
+    const fetchTpslOrders = async () => {
+      try {
+        const res = await fetch(`${BACKEND_URL}/tpsl/orders?wallet=${address}`)
+        const json = await res.json()
+        if (json.success) {
+          setTpslOrders(json.orders)
+
+          // Check for newly triggered orders
+          for (const order of json.orders as TpSlOrder[]) {
+            if (order.status === 'triggered_tp' || order.status === 'triggered_sl') {
+              const label = order.status === 'triggered_tp' ? '🎯 Take Profit triggered' : '🛑 Stop Loss triggered'
+              // Only toast once: check if position is still open
+              const pos = positions.find(p => p.positionId === order.positionId && p.status !== 'closed' && p.status !== 'closing')
+              if (pos) {
+                toast.info(`${label} for ${order.ticker} position`)
+              }
+            }
+          }
+        }
+      } catch {
+        // Silently ignore — backend may not be running
+      }
+    }
+
+    fetchTpslOrders()
+    const interval = setInterval(fetchTpslOrders, 5000)
+    return () => clearInterval(interval)
+  }, [address, positions.length])
 
   // Handle opening a new position
   const handleOpenPosition = useCallback(async () => {
@@ -369,6 +426,9 @@ export function PerpetualsTradeView() {
       )
 
       // Submit open position state
+      const tpPrice = tpSlEnabled && takeProfitPrice ? parseFloat(takeProfitPrice) : null
+      const slPrice = tpSlEnabled && stopLossPrice ? parseFloat(stopLossPrice) : null
+
       const sessionData = {
         positionId,
         type: side, // "long" or "short"
@@ -378,7 +438,9 @@ export function PerpetualsTradeView() {
         ticker: selectedTicker,
         userWallet: address,
         action: "open",
-        timestamp: Date.now()
+        timestamp: Date.now(),
+        takeProfitPrice: tpPrice,
+        stopLossPrice: slPrice,
       }
 
       await submitAppState(appSessionId, initialAllocations, "operate", sessionData)
@@ -388,6 +450,31 @@ export function PerpetualsTradeView() {
       await transfer(COUNTERPARTY_ADDRESS, [
         { asset: "usdc", amount: amount.toString() }
       ])
+
+      // Register TP/SL order with the backend monitoring service
+      if (tpPrice || slPrice) {
+        try {
+          await fetch(`${BACKEND_URL}/tpsl/orders`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              walletAddress: address,
+              ticker: selectedTicker,
+              side,
+              entryPrice: selectedPrice,
+              takeProfitPrice: tpPrice,
+              stopLossPrice: slPrice,
+              leverage,
+              amount: amountAtomic,
+              positionId,
+            }),
+          })
+          toast.info("TP/SL monitor active")
+        } catch (err) {
+          console.error('Failed to register TP/SL:', err)
+          toast.warning("Position opened but TP/SL monitor failed to start")
+        }
+      }
 
       // Add pending position to local state
       setPositions(prev => [...prev, {
@@ -402,12 +489,16 @@ export function PerpetualsTradeView() {
         positionSize: 0,
         liquidationPrice: 0,
         status: "pending",
-        timestamp: Date.now()
+        timestamp: Date.now(),
+        takeProfitPrice: tpPrice,
+        stopLossPrice: slPrice,
       }])
 
       toast.success(`${side === "long" ? "Long" : "Short"} position opened!`)
       setPayAmount("")
       setLongAmount("")
+      setTakeProfitPrice("")
+      setStopLossPrice("")
 
     } catch (error) {
       console.error("Failed to open position:", error)
@@ -583,7 +674,7 @@ export function PerpetualsTradeView() {
       const rect = chartEl.getBoundingClientRect()
       canvas.width = rect.width * 2
       canvas.height = rect.height * 2
-      
+
       // Try to use the browser's native screenshot capability
       // For a proper implementation, you'd use html2canvas library
       const dataUrl = await new Promise<string>((resolve) => {
@@ -1001,7 +1092,7 @@ export function PerpetualsTradeView() {
               <div className="flex items-center gap-1">
                 {/* Chart Type Selector */}
                 <div className="relative">
-                  <button 
+                  <button
                     type="button"
                     onClick={() => setChartTypeDropdownOpen(!chartTypeDropdownOpen)}
                     className={cn(
@@ -1013,7 +1104,7 @@ export function PerpetualsTradeView() {
                     <CandlestickIcon className="w-4 h-4" />
                     <ChevronDown className="w-3 h-3" />
                   </button>
-                  
+
                   {chartTypeDropdownOpen && (
                     <>
                       <div className="fixed inset-0 z-40" onClick={() => setChartTypeDropdownOpen(false)} aria-hidden />
@@ -1045,10 +1136,10 @@ export function PerpetualsTradeView() {
                     </>
                   )}
                 </div>
-                
+
                 {/* Indicators Selector */}
                 <div className="relative">
-                  <button 
+                  <button
                     type="button"
                     onClick={() => setIndicatorsDropdownOpen(!indicatorsDropdownOpen)}
                     className={cn(
@@ -1065,7 +1156,7 @@ export function PerpetualsTradeView() {
                     )}
                     <ChevronDown className="w-3 h-3" />
                   </button>
-                  
+
                   {indicatorsDropdownOpen && (
                     <>
                       <div className="fixed inset-0 z-40" onClick={() => setIndicatorsDropdownOpen(false)} aria-hidden />
@@ -1083,9 +1174,9 @@ export function PerpetualsTradeView() {
                               activeIndicators.has(indicator.key) && "bg-muted/30"
                             )}
                           >
-                            <div 
-                              className="w-3 h-3 rounded-sm border-2" 
-                              style={{ 
+                            <div
+                              className="w-3 h-3 rounded-sm border-2"
+                              style={{
                                 borderColor: indicator.color,
                                 backgroundColor: activeIndicators.has(indicator.key) ? indicator.color : "transparent"
                               }}
@@ -1103,9 +1194,9 @@ export function PerpetualsTradeView() {
                     </>
                   )}
                 </div>
-                
+
                 {/* Fullscreen Button */}
-                <button 
+                <button
                   type="button"
                   onClick={toggleFullscreen}
                   className={cn(
@@ -1116,9 +1207,9 @@ export function PerpetualsTradeView() {
                 >
                   {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
                 </button>
-                
+
                 {/* Screenshot Button */}
-                <button 
+                <button
                   type="button"
                   onClick={handleScreenshot}
                   className="p-1.5 rounded-lg text-muted-foreground hover:bg-muted/50 hover:text-foreground transition-colors"
@@ -1162,7 +1253,7 @@ export function PerpetualsTradeView() {
             {/* Chart area - Candlestick with zoom, pan, crosshair */}
             <div className="flex-1 min-h-0 px-4 pb-4">
               {chartTab === "price" && (
-                <div 
+                <div
                   ref={chartContainerRef}
                   className={cn(
                     "h-full w-full rounded-xl overflow-hidden relative",
@@ -1256,13 +1347,15 @@ export function PerpetualsTradeView() {
               </label>
             </div>
             <div className="flex-1 px-4 pb-4 overflow-auto">
-              <div className="grid grid-cols-8 gap-2 text-xs font-medium text-muted-foreground px-2 py-2 border-b border-border">
+              <div className="grid grid-cols-10 gap-2 text-xs font-medium text-muted-foreground px-2 py-2 border-b border-border">
                 <span>POSITION</span>
                 <span>SIZE</span>
                 <span>LEVERAGE</span>
                 <span>ENTRY PRICE</span>
                 <span>MARK PRICE</span>
                 <span>LIQ. PRICE</span>
+                <span>TP / SL</span>
+                <span>TP/SL STATUS</span>
                 <span>PNL</span>
                 <span>ACTION</span>
               </div>
@@ -1273,7 +1366,7 @@ export function PerpetualsTradeView() {
                 </div>
               ) : (
                 positions.filter(p => p.status !== "closed").map((pos) => (
-                  <div key={pos.positionId} className="grid grid-cols-8 gap-2 px-2 py-3 border-b border-border items-center">
+                  <div key={pos.positionId} className="grid grid-cols-10 gap-2 px-2 py-3 border-b border-border items-center">
                     <div className="flex items-center gap-2">
                       <TokenLogo ticker={pos.ticker} size="sm" />
                       <div>
@@ -1299,6 +1392,38 @@ export function PerpetualsTradeView() {
                     <span className="text-sm tabular-nums text-red-500">
                       {pos.status === "pending" ? "—" : `$${pos.liquidationPrice.toFixed(2)}`}
                     </span>
+                    {/* TP / SL Prices */}
+                    <div className="text-xs tabular-nums">
+                      {pos.takeProfitPrice ? (
+                        <div className="text-emerald-500">TP ${formatPrice(pos.takeProfitPrice)}</div>
+                      ) : null}
+                      {pos.stopLossPrice ? (
+                        <div className="text-red-500">SL ${formatPrice(pos.stopLossPrice)}</div>
+                      ) : null}
+                      {!pos.takeProfitPrice && !pos.stopLossPrice && <span className="text-muted-foreground">—</span>}
+                    </div>
+                    {/* TP/SL Status + Cancel */}
+                    {(() => {
+                      const tpslOrder = tpslOrders.find(o => o.positionId === pos.positionId)
+                      if (!tpslOrder) return <span className="text-xs text-muted-foreground">—</span>
+                      if (tpslOrder.status === 'triggered_tp') return <span className="text-xs text-emerald-500 font-medium">🎯 TP Hit</span>
+                      if (tpslOrder.status === 'triggered_sl') return <span className="text-xs text-red-500 font-medium">🛑 SL Hit</span>
+                      return (
+                        <button
+                          type="button"
+                          onClick={async () => {
+                            try {
+                              await fetch(`${BACKEND_URL}/tpsl/orders/${tpslOrder.id}?wallet=${address}`, { method: 'DELETE' })
+                              setTpslOrders(prev => prev.filter(o => o.id !== tpslOrder.id))
+                              toast.success('TP/SL cancelled')
+                            } catch { toast.error('Failed to cancel TP/SL') }
+                          }}
+                          className="text-[10px] px-2 py-1 rounded bg-muted/50 text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                        >
+                          Cancel TP/SL
+                        </button>
+                      )
+                    })()}
                     <span className={cn(
                       "text-sm tabular-nums font-medium",
                       (pos.pnl || 0) >= 0 ? "text-emerald-500" : "text-red-500"
@@ -1631,7 +1756,7 @@ export function PerpetualsTradeView() {
                   : `${side === "long" ? "Long" : "Short"} ${selectedTicker}`
                 }
               </button>
-              
+
               {/* Protect funds Button */}
               <button
                 type="button"

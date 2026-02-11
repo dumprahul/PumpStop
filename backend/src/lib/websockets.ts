@@ -428,7 +428,7 @@ class WebSocketService {
         try {
             const sessionData = JSON.parse(params.sessionData);
             console.log('📦 Processing session data:', sessionData);
-            
+
             // Check if this is a PERPETUAL position (has tradePair field, not market)
             const isPerpetual = sessionData.positionId && sessionData.tradePair;
 
@@ -1495,6 +1495,113 @@ class WebSocketService {
 
     public getSessionKey(): SessionKey | null {
         return this.sessionKey;
+    }
+
+    /**
+     * Auto-close a perpetual position when TP/SL is triggered by the price monitor.
+     * Uses the triggerPrice as exit price and calculates PnL + transfer.
+     */
+    public async closePerpPositionByOrder(order: import('./tpsl-store').TpSlOrder, triggerType: 'tp' | 'sl', triggerPrice: number): Promise<void> {
+        console.log(`🤖 [Auto-Close] ${triggerType.toUpperCase()} triggered for position ${order.positionId} at $${triggerPrice}`);
+
+        try {
+            // Find the app session for this position
+            const sessions = await this.getAppSessions();
+            let matchingSession: any = null;
+            let sessionData: any = null;
+
+            for (const session of sessions) {
+                const sessionObj = session as any;
+                const rawSessionData = sessionObj.session_data || sessionObj.sessionData;
+                if (!rawSessionData) continue;
+
+                try {
+                    const data = typeof rawSessionData === 'string' ? JSON.parse(rawSessionData) : rawSessionData;
+                    if (data.positionId === order.positionId && data.status === 'filled') {
+                        matchingSession = sessionObj;
+                        sessionData = data;
+                        break;
+                    }
+                } catch {
+                    continue;
+                }
+            }
+
+            if (!matchingSession || !sessionData) {
+                console.error(`❌ [Auto-Close] Could not find app session for position ${order.positionId}`);
+                return;
+            }
+
+            const ticker = order.ticker;
+            const leverage = order.leverage;
+            const collateral = parseInt(order.amount) / 1_000_000;
+            const positionType = order.side;
+            const entryPrice = sessionData.entryPrice;
+            const userWallet = order.walletAddress;
+            const exitPrice = triggerPrice;
+
+            // Calculate PnL
+            let priceChange = 0;
+            let pnl = 0;
+            let pnlPercent = 0;
+
+            if (entryPrice > 0) {
+                priceChange = positionType === 'long'
+                    ? (exitPrice - entryPrice) / entryPrice
+                    : (entryPrice - exitPrice) / entryPrice;
+                pnl = collateral * leverage * priceChange;
+                pnlPercent = priceChange * leverage * 100;
+            }
+
+            const returnAmount = Math.max(0, collateral + pnl);
+
+            console.log(`🧮 [Auto-Close] PnL: Entry $${entryPrice} → Exit $${exitPrice}, PnL: $${pnl.toFixed(2)} (${pnlPercent.toFixed(2)}%)`);
+
+            // Submit closed state
+            const closedData = {
+                ...sessionData,
+                action: 'close',
+                status: 'closed',
+                exitPrice,
+                pnl: pnl.toFixed(2),
+                pnlPercent: pnlPercent.toFixed(2),
+                returnAmount: Math.floor(returnAmount * 1_000_000).toString(),
+                closedAt: Date.now(),
+                closedBy: triggerType === 'tp' ? 'take_profit' : 'stop_loss',
+            };
+
+            const appSessionId = matchingSession.appSessionId || matchingSession.app_session_id;
+            const allocations = (matchingSession.participantAllocations || matchingSession.participant_allocations || []).map((p: any) => ({
+                participant: p.participant,
+                asset: p.asset,
+                amount: p.amount,
+            }));
+
+            // Use zero allocations if none found
+            const finalAllocations = allocations.length > 0 ? allocations : [
+                { participant: userWallet, asset: 'usdc', amount: '0' },
+                { participant: '0x4888Eb840a7Ca93F49C9be3dD95Fc0EdA25bF0c6', asset: 'usdc', amount: '0' },
+            ];
+
+            await this.submitAppState(
+                appSessionId,
+                finalAllocations,
+                RPCAppStateIntent.Operate,
+                closedData
+            );
+
+            // Transfer return amount to user
+            if (returnAmount > 0) {
+                console.log(`💸 [Auto-Close] Transferring $${returnAmount.toFixed(2)} USDC to ${userWallet}`);
+                await this.transfer(userWallet, [
+                    { asset: 'usdc', amount: returnAmount.toString() }
+                ]);
+            }
+
+            console.log(`✅ [Auto-Close] Position ${order.positionId} closed by ${triggerType.toUpperCase()}`);
+        } catch (error) {
+            console.error(`❌ [Auto-Close] Failed to close position ${order.positionId}:`, error);
+        }
     }
 }
 
