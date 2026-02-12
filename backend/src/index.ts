@@ -251,10 +251,6 @@ app.post('/tpsl/orders', (req: Request, res: Response) => {
       res.status(400).json({ success: false, error: 'walletAddress, ticker, side, and positionId are required.' });
       return;
     }
-    if (!takeProfitPrice && !stopLossPrice) {
-      res.status(400).json({ success: false, error: 'At least one of takeProfitPrice or stopLossPrice is required.' });
-      return;
-    }
 
     const order = addOrder({
       walletAddress,
@@ -268,8 +264,10 @@ app.post('/tpsl/orders', (req: Request, res: Response) => {
       positionId,
     });
 
-    // Start watching this ticker on the price monitor
-    priceMonitor.watchTicker(ticker);
+    // Start watching this ticker on the price monitor if TP or SL is set
+    if (takeProfitPrice || stopLossPrice) {
+      priceMonitor.watchTicker(ticker);
+    }
 
     res.json({ success: true, order });
   } catch (error) {
@@ -307,6 +305,10 @@ app.put('/tpsl/orders/:id', (req: Request, res: Response) => {
     if (!order) {
       res.status(404).json({ success: false, error: 'Order not found or not active.' });
       return;
+    }
+    // Start watching this ticker if TP or SL is now set
+    if (order.takeProfitPrice || order.stopLossPrice) {
+      priceMonitor.watchTicker(order.ticker);
     }
     res.json({ success: true, order });
   } catch (error) {

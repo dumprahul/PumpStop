@@ -451,29 +451,29 @@ export function PerpetualsTradeView() {
         { asset: "usdc", amount: amount.toString() }
       ])
 
-      // Register TP/SL order with the backend monitoring service
-      if (tpPrice || slPrice) {
-        try {
-          await fetch(`${BACKEND_URL}/tpsl/orders`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              walletAddress: address,
-              ticker: selectedTicker,
-              side,
-              entryPrice: selectedPrice,
-              takeProfitPrice: tpPrice,
-              stopLossPrice: slPrice,
-              leverage,
-              amount: amountAtomic,
-              positionId,
-            }),
-          })
+      // Always register TP/SL order with the backend to track the position
+      try {
+        await fetch(`${BACKEND_URL}/tpsl/orders`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            walletAddress: address,
+            ticker: selectedTicker,
+            side,
+            entryPrice: selectedPrice,
+            takeProfitPrice: tpPrice,
+            stopLossPrice: slPrice,
+            leverage,
+            amount: amountAtomic,
+            positionId,
+          }),
+        })
+        if (tpPrice || slPrice) {
           toast.info("TP/SL monitor active")
-        } catch (err) {
-          console.error('Failed to register TP/SL:', err)
-          toast.warning("Position opened but TP/SL monitor failed to start")
         }
+      } catch (err) {
+        console.error('Failed to register TP/SL:', err)
+        toast.warning("Position opened but TP/SL monitor failed to start")
       }
 
       // Add pending position to local state
@@ -506,7 +506,7 @@ export function PerpetualsTradeView() {
     } finally {
       setIsProcessing(false)
     }
-  }, [isConnected, isAuthenticated, connect, address, payAmount, side, leverage, selectedTicker, createAppSession, submitAppState, transfer])
+  }, [isConnected, isAuthenticated, connect, address, payAmount, side, leverage, selectedTicker, selectedPrice, tpSlEnabled, takeProfitPrice, stopLossPrice, createAppSession, submitAppState, transfer])
 
   // Handle closing a position
   const handleClosePosition = useCallback(async (position: Position) => {

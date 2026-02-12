@@ -252,22 +252,30 @@ export function YellowNetworkProvider({ children }: YellowNetworkProviderProps) 
             const challengeResponse = response as AuthChallengeResponse;
             const allowances = [
               { asset: 'usdc', amount: '1000000000000' }, // 1M USDC (6 decimals)
-              // All stock tokens - 1M tokens each (18 decimals) - uppercase symbols
-              { asset: 'AAPL', amount: '1000000000000000000000000' },
-              { asset: 'NVDA', amount: '1000000000000000000000000' },
-              { asset: 'ONDS', amount: '1000000000000000000000000' },
-              { asset: 'AMZN', amount: '1000000000000000000000000' },
-              { asset: 'PFE', amount: '1000000000000000000000000' },
-              { asset: 'META', amount: '1000000000000000000000000' },
-              { asset: 'GOOG', amount: '1000000000000000000000000' },
-              { asset: 'INTC', amount: '1000000000000000000000000' },
-              { asset: 'NFLX', amount: '1000000000000000000000000' },
-              { asset: 'MSFT', amount: '1000000000000000000000000' },
-              { asset: 'SOFI', amount: '1000000000000000000000000' },
-              { asset: 'AMD', amount: '1000000000000000000000000' },
-              { asset: 'TSLA', amount: '1000000000000000000000000' },
-              { asset: 'OPEN', amount: '1000000000000000000000000' },
-              { asset: 'JPM', amount: '1000000000000000000000000' },
+              // All synthetic crypto tokens - 1M tokens each (18 decimals)
+              { asset: 'BTC', amount: '1000000000000000000000000' },
+              { asset: 'ETH', amount: '1000000000000000000000000' },
+              { asset: 'SOL', amount: '1000000000000000000000000' },
+              { asset: 'LINK', amount: '1000000000000000000000000' },
+              { asset: 'SUI', amount: '1000000000000000000000000' },
+              { asset: 'DOGE', amount: '1000000000000000000000000' },
+              { asset: 'XRP', amount: '1000000000000000000000000' },
+              { asset: 'AVAX', amount: '1000000000000000000000000' },
+              { asset: 'ATOM', amount: '1000000000000000000000000' },
+              { asset: 'ADA', amount: '1000000000000000000000000' },
+              { asset: 'DOT', amount: '1000000000000000000000000' },
+              { asset: 'LTC', amount: '1000000000000000000000000' },
+              { asset: 'ARB', amount: '1000000000000000000000000' },
+              { asset: 'OP', amount: '1000000000000000000000000' },
+              { asset: 'PEPE', amount: '1000000000000000000000000' },
+              { asset: 'WIF', amount: '1000000000000000000000000' },
+              { asset: 'BONK', amount: '1000000000000000000000000' },
+              { asset: 'SEI', amount: '1000000000000000000000000' },
+              { asset: 'APT', amount: '1000000000000000000000000' },
+              { asset: 'FIL', amount: '1000000000000000000000000' },
+              { asset: 'NEAR', amount: '1000000000000000000000000' },
+              { asset: 'INJ', amount: '1000000000000000000000000' },
+              { asset: 'TIA', amount: '1000000000000000000000000' },
             ];
             const authParams = {
               scope: 'median.app',
@@ -576,7 +584,7 @@ export function YellowNetworkProvider({ children }: YellowNetworkProviderProps) 
 
                   if (sessionData.action === 'swap') {
                     // For swap: transfer the payment asset (source token)
-                    asset = sessionData.paymentAsset || 'AAPL';
+                    asset = sessionData.paymentAsset || 'BTC';
                     amount = sessionData.payAmountAtomic || sessionData.amount;
                   } else {
                     // For buy/sell: original logic
@@ -826,22 +834,30 @@ export function YellowNetworkProvider({ children }: YellowNetworkProviderProps) 
 
           const allowances = [
             { asset: 'usdc', amount: '1000000000000' }, // 1M USDC (6 decimals)
-            // All stock tokens - 1M tokens each (18 decimals) - uppercase symbols
-            { asset: 'AAPL', amount: '1000000000000000000000000' },
-            { asset: 'NVDA', amount: '1000000000000000000000000' },
-            { asset: 'ONDS', amount: '1000000000000000000000000' },
-            { asset: 'AMZN', amount: '1000000000000000000000000' },
-            { asset: 'PFE', amount: '1000000000000000000000000' },
-            { asset: 'META', amount: '1000000000000000000000000' },
-            { asset: 'GOOG', amount: '1000000000000000000000000' },
-            { asset: 'INTC', amount: '1000000000000000000000000' },
-            { asset: 'NFLX', amount: '1000000000000000000000000' },
-            { asset: 'MSFT', amount: '1000000000000000000000000' },
-            { asset: 'SOFI', amount: '1000000000000000000000000' },
-            { asset: 'AMD', amount: '1000000000000000000000000' },
-            { asset: 'TSLA', amount: '1000000000000000000000000' },
-            { asset: 'OPEN', amount: '1000000000000000000000000' },
-            { asset: 'JPM', amount: '1000000000000000000000000' },
+            // All synthetic crypto tokens - 1M tokens each (18 decimals)
+            { asset: 'BTC', amount: '1000000000000000000000000' },
+            { asset: 'ETH', amount: '1000000000000000000000000' },
+            { asset: 'SOL', amount: '1000000000000000000000000' },
+            { asset: 'LINK', amount: '1000000000000000000000000' },
+            { asset: 'SUI', amount: '1000000000000000000000000' },
+            { asset: 'DOGE', amount: '1000000000000000000000000' },
+            { asset: 'XRP', amount: '1000000000000000000000000' },
+            { asset: 'AVAX', amount: '1000000000000000000000000' },
+            { asset: 'ATOM', amount: '1000000000000000000000000' },
+            { asset: 'ADA', amount: '1000000000000000000000000' },
+            { asset: 'DOT', amount: '1000000000000000000000000' },
+            { asset: 'LTC', amount: '1000000000000000000000000' },
+            { asset: 'ARB', amount: '1000000000000000000000000' },
+            { asset: 'OP', amount: '1000000000000000000000000' },
+            { asset: 'PEPE', amount: '1000000000000000000000000' },
+            { asset: 'WIF', amount: '1000000000000000000000000' },
+            { asset: 'BONK', amount: '1000000000000000000000000' },
+            { asset: 'SEI', amount: '1000000000000000000000000' },
+            { asset: 'APT', amount: '1000000000000000000000000' },
+            { asset: 'FIL', amount: '1000000000000000000000000' },
+            { asset: 'NEAR', amount: '1000000000000000000000000' },
+            { asset: 'INJ', amount: '1000000000000000000000000' },
+            { asset: 'TIA', amount: '1000000000000000000000000' },
           ];
           const authParams: AuthRequestParams = {
             address: currentAddress,

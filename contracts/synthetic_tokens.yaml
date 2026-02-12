@@ -140,3 +140,77 @@ synthetic_tokens:
     address: "0xc7B7F951439e7CEc48fC9B428Cf487D9bE75C33F"
     chain_id: 11155420
     decimals: 18
+
+  # Custom community tokens — Batch 5 (Sepolia)
+  - symbol: IHAI
+    name: I have an idea
+    address: "0x486aeF528736F932E4C3538C8D208C0d12336D17"
+    chain_id: 11155111
+    decimals: 18
+
+  - symbol: CTDL
+    name: AI Market Maker
+    address: "0x8C2AB5976C68710D96190E7016eF13e25A8EE418"
+    chain_id: 11155111
+    decimals: 18
+
+  - symbol: PBNB
+    name: PetsBNB
+    address: "0x1E61Fa5969F47F7e8622053Ad45baC9E0D0E5532"
+    chain_id: 11155111
+    decimals: 18
+
+  - symbol: BABYMOLT
+    name: babymolt
+    address: "0xBA24952E81861A7c8969f8436De538c8E1724d1A"
+    chain_id: 11155111
+    decimals: 18
+
+  - symbol: IDEA
+    name: Idea Coins
+    address: "0x259f44E3E4AadD3aBc1cb996CE6D99FE85f2807e"
+    chain_id: 11155111
+    decimals: 18
+
+  - symbol: CLAW
+    name: OpenClaw
+    address: "0xC356Fbfbc22c2298d39961Cb68751Fb0f35BF4B8"
+    chain_id: 11155111
+    decimals: 18
+
+  # Custom community tokens — Batch 6 (Base Sepolia)
+  - symbol: LIFE
+    name: SENFINA
+    address: "0x5eF594D3a2812fc62cCFeFf9D0632dFdf604545A"
+    chain_id: 84532
+    decimals: 18
+
+  - symbol: STOCK
+    name: 24 Hour Stock Trader
+    address: "0xE6407dC763840A474314f210120e3d14e6b7d08A"
+    chain_id: 84532
+    decimals: 18
+
+  - symbol: KIN
+    name: KIN
+    address: "0xB8322Cf6a18F74Fb8BfcD7657081adB5DDff776d"
+    chain_id: 84532
+    decimals: 18
+
+  - symbol: ROBIN
+    name: Robinpump
+    address: "0xFcb67b2f8585357e0C3c8F2B51b4247D344c6499"
+    chain_id: 84532
+    decimals: 18
+
+  - symbol: BASE
+    name: Base
+    address: "0x0f43c0e06ACC4E15bEd78507bB627DEE84f485cB"
+    chain_id: 84532
+    decimals: 18
+
+  - symbol: JEWDENG
+    name: JEWDENG
+    address: "0x6Cd9e4642aaF902342Afe7762D6da60Ca9591324"
+    chain_id: 84532
+    decimals: 18
