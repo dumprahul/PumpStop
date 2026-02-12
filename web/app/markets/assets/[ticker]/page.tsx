@@ -36,13 +36,27 @@ const CRYPTO_NAMES: Record<string, string> = {
   NEAR: "NEAR Protocol",
   INJ: "Injective",
   TIA: "Celestia",
+  IHAI: "I have an idea",
+  CTDL: "AI Market Maker",
+  PBNB: "PetsBNB",
+  BABYMOLT: "babymolt",
+  IDEA: "Idea Coins",
+  CLAW: "OpenClaw",
+  LIFE: "SENFINA",
+  STOCK: "24 Hour Stock Trader",
+  KIN: "KIN",
+  ROBIN: "Robinpump",
+  BASE: "Base",
+  JEWDENG: "JEWDENG",
 }
 
 // Supported crypto tickers
 const CRYPTO_TICKERS = new Set([
   "BTC", "ETH", "SOL", "LINK", "SUI", "DOGE", "XRP",
   "AVAX", "ATOM", "ADA", "DOT", "LTC", "ARB", "OP",
-  "PEPE", "WIF", "BONK", "SEI", "APT", "FIL", "NEAR", "INJ", "TIA"
+  "PEPE", "WIF", "BONK", "SEI", "APT", "FIL", "NEAR", "INJ", "TIA",
+  "IHAI", "CTDL", "PBNB", "BABYMOLT", "IDEA", "CLAW",
+  "LIFE", "STOCK", "KIN", "ROBIN", "BASE", "JEWDENG",
 ])
 
 export default function AssetPage({ params }: Props) {

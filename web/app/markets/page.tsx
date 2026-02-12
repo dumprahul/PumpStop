@@ -34,6 +34,18 @@ const CRYPTO_NAMES: Record<string, string> = {
   NEAR: "NEAR Protocol",
   INJ: "Injective",
   TIA: "Celestia",
+  IHAI: "I have an idea",
+  CTDL: "AI Market Maker",
+  PBNB: "PetsBNB",
+  BABYMOLT: "babymolt",
+  IDEA: "Idea Coins",
+  CLAW: "OpenClaw",
+  LIFE: "SENFINA",
+  STOCK: "24 Hour Stock Trader",
+  KIN: "KIN",
+  ROBIN: "Robinpump",
+  BASE: "Base",
+  JEWDENG: "JEWDENG",
 }
 
 // Crypto categories
@@ -61,6 +73,18 @@ const CRYPTO_CATEGORIES: Record<string, string[]> = {
   NEAR: ["Layer 1"],
   INJ: ["DeFi"],
   TIA: ["Layer 1", "Modular"],
+  IHAI: ["Community", "Meme"],
+  CTDL: ["Community", "Meme"],
+  PBNB: ["Community", "Meme"],
+  BABYMOLT: ["Community", "Meme"],
+  IDEA: ["Community", "Meme"],
+  CLAW: ["Community", "Meme"],
+  LIFE: ["Community", "Meme"],
+  STOCK: ["Community", "Meme"],
+  KIN: ["Community", "Meme"],
+  ROBIN: ["Community", "Meme"],
+  BASE: ["Community", "Meme"],
+  JEWDENG: ["Community", "Meme"],
 }
 
 // Generate sparkline data based on 24h price change

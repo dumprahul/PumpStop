@@ -143,6 +143,18 @@ const TOKEN_NAMES: Record<string, string> = {
   NEAR: "NEAR",
   INJ: "Injective",
   TIA: "Celestia",
+  IHAI: "I have an idea",
+  CTDL: "AI Market Maker",
+  PBNB: "PetsBNB",
+  BABYMOLT: "babymolt",
+  IDEA: "Idea Coins",
+  CLAW: "OpenClaw",
+  LIFE: "SENFINA",
+  STOCK: "24 Hour Stock Trader",
+  KIN: "KIN",
+  ROBIN: "Robinpump",
+  BASE: "Base",
+  JEWDENG: "JEWDENG",
 }
 
 const MAX_LEVERAGE: Record<string, number> = {
@@ -160,6 +172,8 @@ const ALLOWED_TICKERS = new Set([
   "BTC", "ETH", "SOL", "LINK", "SUI", "DOGE", "XRP",
   "AVAX", "ATOM", "ADA", "DOT", "LTC", "ARB", "OP",
   "PEPE", "WIF", "BONK", "SEI", "APT", "FIL", "NEAR", "INJ", "TIA",
+  "IHAI", "CTDL", "PBNB", "BABYMOLT", "IDEA", "CLAW",
+  "LIFE", "STOCK", "KIN", "ROBIN", "BASE", "JEWDENG",
 ])
 
 // Logo.dev publishable key (must be exposed as NEXT_PUBLIC_ to avoid SSR/client mismatch)
@@ -197,6 +211,18 @@ function TokenLogo({ ticker, size = "md" }: { ticker: string; size?: "sm" | "md"
     ARB: "from-blue-500 to-indigo-600",
     OP: "from-red-500 to-red-600",
     PEPE: "from-green-400 to-green-600",
+    IHAI: "from-lime-400 to-green-500",
+    CTDL: "from-violet-400 to-purple-600",
+    PBNB: "from-yellow-400 to-orange-500",
+    BABYMOLT: "from-rose-400 to-pink-600",
+    IDEA: "from-teal-400 to-cyan-600",
+    CLAW: "from-orange-400 to-red-500",
+    LIFE: "from-emerald-400 to-green-600",
+    STOCK: "from-blue-400 to-indigo-500",
+    KIN: "from-pink-400 to-rose-600",
+    ROBIN: "from-green-500 to-emerald-600",
+    BASE: "from-sky-400 to-blue-600",
+    JEWDENG: "from-amber-400 to-yellow-600",
   }
 
   const textSizes = {

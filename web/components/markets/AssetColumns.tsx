@@ -10,7 +10,9 @@ import { cn, getCryptoLogoUrl, getStockLogoUrl } from "@/lib/utils"
 const CRYPTO_TICKERS = new Set([
   "BTC", "ETH", "SOL", "LINK", "SUI", "DOGE", "XRP",
   "AVAX", "ATOM", "ADA", "DOT", "LTC", "ARB", "OP",
-  "PEPE", "WIF", "BONK", "SEI", "APT", "FIL", "NEAR", "INJ", "TIA"
+  "PEPE", "WIF", "BONK", "SEI", "APT", "FIL", "NEAR", "INJ", "TIA",
+  "IHAI", "CTDL", "PBNB", "BABYMOLT", "IDEA", "CLAW",
+  "LIFE", "STOCK", "KIN", "ROBIN", "BASE", "JEWDENG",
 ])
 
 function isCrypto(ticker: string): boolean {

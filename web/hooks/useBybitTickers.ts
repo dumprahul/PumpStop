@@ -1,7 +1,9 @@
 "use client"
 
-import { useState, useEffect, useRef, useCallback } from "react"
+import { useState, useEffect, useRef, useCallback, useMemo } from "react"
 import { BYBIT_WS_URL, BYBIT_REST_URL, tickerToBybitSymbol } from "@/lib/bybit"
+import { useCustomTokenPrices } from "./useCustomTokenPrices"
+import { isCustomToken } from "@/lib/custom-tokens"
 
 const LOG_STREAM = false
 
@@ -225,20 +227,33 @@ export function useBybitTickers() {
     }
   }, [updateTicker])
 
-  // Convert map to array sorted by volume
-  const tickersList = Array.from(tickers.values()).sort(
-    (a, b) => b.turnover24h - a.turnover24h
+  // Merge custom community token prices
+  const { tickers: customTickers, loading: customLoading } = useCustomTokenPrices()
+
+  // Combine Bybit + custom tickers
+  const mergedList = useMemo(() => {
+    const bybitList = Array.from(tickers.values())
+    const customList = Array.from(customTickers.values())
+    return [...bybitList, ...customList].sort((a, b) => b.turnover24h - a.turnover24h)
+  }, [tickers, customTickers])
+
+  const getTickerByTicker = useCallback(
+    (ticker: string) => {
+      if (isCustomToken(ticker)) {
+        return customTickers.get(ticker)
+      }
+      const symbol = tickerToBybitSymbol(ticker)
+      return symbol ? tickers.get(symbol) : undefined
+    },
+    [tickers, customTickers]
   )
 
   return {
     tickers,
-    tickersList,
-    loading,
+    tickersList: mergedList,
+    loading: loading && customLoading,
     error,
     getTickerBySymbol: (symbol: string) => tickers.get(symbol),
-    getTickerByTicker: (ticker: string) => {
-      const symbol = tickerToBybitSymbol(ticker)
-      return symbol ? tickers.get(symbol) : undefined
-    },
+    getTickerByTicker,
   }
 }

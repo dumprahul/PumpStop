@@ -8,6 +8,7 @@ import {
   BYBIT_WS_URL,
   type OHLCData,
 } from "@/lib/bybit"
+import { isCustomToken } from "@/lib/custom-tokens"
 
 /** Log stream data to console (enable in dev) */
 const LOG_STREAM = false
@@ -56,10 +57,31 @@ function wsCandleToOHLC(d: {
   }
 }
 
+function generateCustomTokenCandles(basePrice: number, count: number = 200): OHLCData[] {
+  const data: OHLCData[] = []
+  let price = basePrice
+  const now = Date.now()
+
+  for (let i = count - 1; i >= 0; i--) {
+    const time = Math.floor((now - i * 15 * 60 * 1000) / 1000)
+    const volatility = basePrice * 0.02
+    const change = (Math.sin(i * 0.5) * 0.5 + Math.cos(i * 0.3) * 0.3) * volatility
+    const open = price
+    price = price + change
+    const close = price
+    const high = Math.max(open, close) + Math.random() * volatility * 0.5
+    const low = Math.min(open, close) - Math.random() * volatility * 0.5
+    const volume = Math.floor(1000000 + Math.random() * 5000000)
+    data.push({ time, open, high, low, close, volume })
+  }
+  return data
+}
+
 export function useBybitKline(ticker: string, timeframe: string) {
   const symbol = tickerToBybitSymbol(ticker)
   const interval = timeframeToBybitInterval(timeframe)
-  const isSupported = !!symbol
+  const isCustom = isCustomToken(ticker)
+  const isSupported = !!symbol || isCustom
 
   const [data, setData] = useState<OHLCData[]>([])
   const [loading, setLoading] = useState(true)
@@ -148,6 +170,14 @@ export function useBybitKline(ticker: string, timeframe: string) {
       return
     }
 
+    // Custom tokens use mock candle data
+    if (isCustom) {
+      setData(generateCustomTokenCandles(0.0000045, 200))
+      setLoading(false)
+      setError(null)
+      return
+    }
+
     let cancelled = false
 
     async function loadInitial() {
@@ -172,10 +202,10 @@ export function useBybitKline(ticker: string, timeframe: string) {
     return () => {
       cancelled = true
     }
-  }, [symbol, interval, isSupported])
+  }, [symbol, interval, isSupported, isCustom])
 
   useEffect(() => {
-    if (!isSupported || !symbol) return
+    if (!isSupported || !symbol || isCustom) return
 
     const topic = `kline.${interval}.${symbol}`
 
@@ -245,7 +275,7 @@ export function useBybitKline(ticker: string, timeframe: string) {
       }
       pendingCandleRef.current = null
     }
-  }, [symbol, interval, isSupported, mergeCandle])
+  }, [symbol, interval, isSupported, isCustom, mergeCandle])
 
   return {
     data,
