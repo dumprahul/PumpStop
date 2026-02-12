@@ -411,6 +411,14 @@ export function PerpetualsTradeView() {
     return () => clearInterval(interval)
   }, [address, positions.length])
 
+  // Live tickers from Bybit (crypto perps only)
+  const { tickersList, getTickerByTicker, loading: tickersLoading } = useBybitTickers()
+
+  // Get selected market data (must be above handleOpenPosition which uses selectedPrice)
+  const selectedMarketFromBybit = getTickerByTicker(selectedTicker)
+  const selectedMarket = selectedMarketFromBybit
+  const selectedPrice = selectedMarket?.price ?? 0
+
   // Handle opening a new position
   const handleOpenPosition = useCallback(async () => {
     if (!isConnected || !isAuthenticated) {
@@ -580,13 +588,6 @@ export function PerpetualsTradeView() {
     }
   }, [address, submitAppState])
 
-  // Live tickers from Bybit (crypto perps only)
-  const { tickersList, getTickerByTicker, loading: tickersLoading } = useBybitTickers()
-
-  // Get selected market data from Bybit
-  const selectedMarketFromBybit = getTickerByTicker(selectedTicker)
-  const selectedMarket = selectedMarketFromBybit
-  const selectedPrice = selectedMarket?.price ?? 0
   const selectedChange = selectedMarket?.changePct24h ?? 0
   const positive = selectedChange >= 0
 

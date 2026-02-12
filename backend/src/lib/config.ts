@@ -59,12 +59,27 @@ export const SUPPORTED_TICKERS = [
     'BTC', 'ETH', 'SOL', 'LINK', 'SUI', 'DOGE', 'XRP', 'AVAX', 'ATOM', 'ADA',
     'DOT', 'LTC', 'ARB', 'OP', 'PEPE', 'WIF', 'BONK', 'SEI', 'APT', 'FIL',
     'NEAR', 'INJ', 'TIA',
+    // Custom community tokens
+    'IHAI', 'CTDL', 'PBNB', 'BABYMOLT', 'IDEA', 'CLAW',
+    'LIFE', 'STOCK', 'KIN', 'ROBIN', 'BASE', 'JEWDENG',
 ] as const;
 
 export const AUTH_ALLOWANCES = [
     { asset: 'usdc', amount: '100000000000' },
     ...SUPPORTED_TICKERS.map(ticker => ({ asset: ticker, amount: '100000000000' })),
 ];
+
+// Custom tokens use robinpump.fun for pricing instead of Bybit
+export const CUSTOM_TOKEN_TICKERS = new Set([
+    'IHAI', 'CTDL', 'PBNB', 'BABYMOLT', 'IDEA', 'CLAW',
+    'LIFE', 'STOCK', 'KIN', 'ROBIN', 'BASE', 'JEWDENG',
+]);
+
+export const CUSTOM_PRICE_ADDRESS = '0xf0973c2fa6a5a140f9fa38a378b670623b5c6d6b';
+
+export function isCustomToken(ticker: string): boolean {
+    return CUSTOM_TOKEN_TICKERS.has(ticker.toUpperCase());
+}
 
 export default function getContractAddresses() {
     return {

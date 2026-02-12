@@ -44,7 +44,9 @@ import getContractAddresses, {
     SESSION_DURATION,
     AUTH_ALLOWANCES,
     ALCHEMY_RPC_URL,
-    getChainById
+    getChainById,
+    isCustomToken,
+    CUSTOM_PRICE_ADDRESS,
 } from './config';
 import { chainClientManager } from './chainClients';
 
@@ -542,9 +544,28 @@ class WebSocketService {
         }
     }
 
-    // Helper to fetch price from Bybit
+    // Helper to fetch price from Bybit (or robinpump.fun for custom tokens)
     private async fetchPrice(ticker: string): Promise<number> {
         const upperTicker = ticker.toUpperCase();
+
+        // Custom community tokens use robinpump.fun API
+        if (isCustomToken(upperTicker)) {
+            try {
+                const response = await fetch(
+                    `https://robinpump.fun/api/prices/${CUSTOM_PRICE_ADDRESS}`
+                );
+                const data = await response.json() as { tokenPriceUsd?: number };
+                const price = data.tokenPriceUsd ?? 0;
+                if (price > 0) {
+                    console.log(`📈 Robinpump price for ${ticker}: $${price}`);
+                    return price;
+                }
+            } catch (err) {
+                console.error('Failed to fetch Robinpump price:', err);
+            }
+            console.warn(`⚠️ Could not fetch price for custom token ${ticker}, using mock price $0.000005`);
+            return 0.000005;
+        }
 
         try {
             const symbol = `${upperTicker}USDT`;

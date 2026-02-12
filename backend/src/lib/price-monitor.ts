@@ -1,7 +1,9 @@
 import WebSocket from 'ws';
 import { getAllActiveOrders, getActiveTickersSet, markOrderTriggered, type TpSlOrder } from './tpsl-store';
+import { isCustomToken, CUSTOM_PRICE_ADDRESS } from './config';
 
 const BYBIT_WS_URL = 'wss://stream.bybit.com/v5/public/linear';
+const CUSTOM_TOKEN_POLL_INTERVAL = 30_000; // 30 seconds
 
 /** Map our ticker to Bybit linear symbol */
 function tickerToBybitSymbol(ticker: string): string {
@@ -11,7 +13,9 @@ function tickerToBybitSymbol(ticker: string): string {
 class PriceMonitor {
     private ws: WebSocket | null = null;
     private subscribedTickers = new Set<string>();
+    private customTokenTickers = new Set<string>();
     private reconnectTimeout: ReturnType<typeof setTimeout> | null = null;
+    private customPollInterval: ReturnType<typeof setInterval> | null = null;
     private isRunning = false;
     private onTrigger?: (order: TpSlOrder, type: 'tp' | 'sl', price: number) => void;
 
@@ -24,13 +28,21 @@ class PriceMonitor {
         if (this.isRunning) return;
         this.isRunning = true;
         this.connect();
+        this.startCustomTokenPolling();
         console.log('📡 [Price Monitor] Started');
     }
 
     /** Subscribe to a new ticker if not already watching */
     watchTicker(ticker: string) {
         const upper = ticker.toUpperCase();
-        if (this.subscribedTickers.has(upper)) return;
+        if (this.subscribedTickers.has(upper) || this.customTokenTickers.has(upper)) return;
+
+        // Custom tokens use polling, not Bybit WS
+        if (isCustomToken(upper)) {
+            this.customTokenTickers.add(upper);
+            console.log(`📡 [Price Monitor] Watching custom token ${upper} via polling`);
+            return;
+        }
 
         this.subscribedTickers.add(upper);
         const symbol = tickerToBybitSymbol(upper);
@@ -40,6 +52,32 @@ class PriceMonitor {
             this.ws.send(JSON.stringify({ op: 'subscribe', args: [topic] }));
             console.log(`📡 [Price Monitor] Subscribed to ${topic}`);
         }
+    }
+
+    /** Poll robinpump.fun for custom token prices and check TP/SL orders */
+    private startCustomTokenPolling() {
+        this.customPollInterval = setInterval(async () => {
+            // Only poll if there are custom token orders to check
+            const activeOrders = getAllActiveOrders().filter(
+                o => isCustomToken(o.ticker) && o.status === 'active'
+            );
+            if (activeOrders.length === 0) return;
+
+            try {
+                const response = await fetch(
+                    `https://robinpump.fun/api/prices/${CUSTOM_PRICE_ADDRESS}`
+                );
+                const data = await response.json() as { tokenPriceUsd?: number };
+                const price = data.tokenPriceUsd ?? 0;
+                if (price <= 0) return;
+
+                for (const order of activeOrders) {
+                    this.evaluateOrder(order, price);
+                }
+            } catch {
+                // Silently ignore fetch errors
+            }
+        }, CUSTOM_TOKEN_POLL_INTERVAL);
     }
 
     private connect() {
@@ -143,6 +181,10 @@ class PriceMonitor {
         if (this.reconnectTimeout) {
             clearTimeout(this.reconnectTimeout);
             this.reconnectTimeout = null;
+        }
+        if (this.customPollInterval) {
+            clearInterval(this.customPollInterval);
+            this.customPollInterval = null;
         }
         if (this.ws) {
             this.ws.close();
